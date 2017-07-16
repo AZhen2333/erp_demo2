@@ -15,7 +15,9 @@
         <property name="tele" /> 
         <property name="address" /> 
         <property name="birthday" /> 
-        <property name="depuuid" /> 
+       <!--  <property name="depuuid" />  -->
+       <!--多对一  -->
+       <many-to-one name="dep" class="cn.itcast.erp.entity.Dep" column="depuuid"></many-to-one>
  
     </class>
 </hibernate-mapping>

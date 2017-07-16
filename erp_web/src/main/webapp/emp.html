@@ -22,7 +22,7 @@
 	  		    {field:'tele',title:'联系电话',width:100},
 	  		    {field:'address',title:'联系地址',width:100},
 	  		    {field:'birthday',title:'出生年月日',width:100,formatter:birthday},
-	  		    {field:'depuuid',title:'部门编号',width:100},
+	  		    {field:'dep',title:'部门',width:100,formatter:depname},
 
 				{field:'-',title:'操作',width:200,formatter: function(value,row,index){
 					var oper = "<a href=\"javascript:void(0)\" onclick=\"edit(" + row.uuid + ')">修改</a>';
@@ -43,6 +43,15 @@
 	//日期格式化
 	function birthday(value){
 		return (new Date(value)).Format("yyyy-MM-dd")
+	}
+
+	//格式化部门
+	function depname(value){
+		if(null!=value){
+			return value.name;
+		}else{
+			return '';
+		}
 	}
 </script>
 
