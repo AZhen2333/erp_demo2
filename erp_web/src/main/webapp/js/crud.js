@@ -27,10 +27,14 @@ $(function(){
 	});
 
 	//初始化编辑窗口
+	var _height=200;
+	if(typeof(height)!='undefined'){
+		_height=height;
+	}
 	$('#editDlg').dialog({
 		title: '编辑',//窗口标题
 		width: 300,//窗口宽度
-		height: 200,//窗口高度
+		height: _height,//窗口高度
 		closed: true,//窗口是是否为关闭状态, true：表示关闭
 		modal: true,//模式窗口
 		buttons:[{

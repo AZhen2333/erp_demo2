@@ -39,6 +39,12 @@ public class EmpDao extends BaseDao<Emp> implements IEmpDao {
 			if(null != emp1.getAddress() && emp1.getAddress().trim().length()>0){
 				dc.add(Restrictions.like("address", emp1.getAddress(), MatchMode.ANYWHERE));
 			}
+			if(null!=emp1.getBirthday()){
+				dc.add(Restrictions.ge("birthday", emp1.getBirthday()));
+			}
+			if(null!=emp2.getBirthday()){
+				dc.add(Restrictions.le("birthday", emp2.getBirthday()));
+			}
 
 		}
 		return dc;
