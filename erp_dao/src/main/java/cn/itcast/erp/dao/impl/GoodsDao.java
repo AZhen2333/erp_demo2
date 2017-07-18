@@ -33,7 +33,9 @@ public class GoodsDao extends BaseDao<Goods> implements IGoodsDao {
 			if(null != goods1.getUnit() && goods1.getUnit().trim().length()>0){
 				dc.add(Restrictions.like("unit", goods1.getUnit(), MatchMode.ANYWHERE));
 			}
-
+			if(null!=goods1.getGoodstype()&&null!=goods1.getGoodstype().getUuid()){
+				dc.add(Restrictions.eq("goodstype", goods1.getGoodstype()));
+			}
 		}
 		return dc;
 	}

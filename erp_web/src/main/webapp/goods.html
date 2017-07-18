@@ -20,7 +20,7 @@
 	  		    {field:'unit',title:'计量单位',width:100},
 	  		    {field:'inprice',title:'进货价格',width:100},
 	  		    {field:'outprice',title:'销售价格',width:100},
-	  		    {field:'goodstypeuuid',title:'商品类型',width:100},
+	  		    {field:'goodstype',title:'商品类型',width:100,formatter:goodstypename},
 
 				{field:'-',title:'操作',width:200,formatter: function(value,row,index){
 					var oper = "<a href=\"javascript:void(0)\" onclick=\"edit(" + row.uuid + ')">修改</a>';
@@ -28,6 +28,14 @@
 					return oper;
 				}}
 				]];
+	
+	function goodstypename(value){
+		if(null!=value){
+			return value.name;
+		}else{
+			return '';
+		}
+	}
 
 </script>
 </head>
@@ -41,7 +49,8 @@
 	计量单位：<input name="t1.unit" >
 	进货价格：<input name="t1.inprice" >
 	销售价格：<input name="t1.outprice" >
-	商品类型：<input name="t1.goodstypeuuid" >
+	商品类型：<input name="t1.goodstypeuuid" class="easyui-combobox" 
+				data-options="valueField:'uuid',textField:'name',url:'goodstype_list.action'" >
 
 		<button type="button" id="btnSearch">查询</button>
 	</form>

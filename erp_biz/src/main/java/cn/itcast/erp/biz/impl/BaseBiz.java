@@ -61,6 +61,15 @@ public class BaseBiz<T> implements IBaseBiz<T> {
 	public T get(Long uuid){
 		return baseDao.get(uuid);
 	}
+
+	/**
+	 * 通过编号查询对象
+	 * @param uuid
+	 * @return
+	 */
+	public T get(String uuid){
+		return baseDao.get(uuid);
+	}
 	
 	/**
 	 * 更新

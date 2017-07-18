@@ -15,6 +15,7 @@
 	<!-- 部门 -->
 	<bean id="depBiz" class="cn.itcast.erp.biz.impl.DepBiz">
 		<property name="depDao" ref="depDao"></property>
+		<property name="empDao" ref="empDao"></property>
 	</bean>
 	<!-- 员工 -->
 	<bean id="empBiz" class="cn.itcast.erp.biz.impl.EmpBiz">

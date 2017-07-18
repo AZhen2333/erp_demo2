@@ -1,4 +1,6 @@
 package cn.itcast.erp.action;
+import com.alibaba.fastjson.JSON;
+
 import cn.itcast.erp.biz.IMenuBiz;
 import cn.itcast.erp.entity.Menu;
 
@@ -14,6 +16,12 @@ public class MenuAction extends BaseAction<Menu> {
 	public void setMenuBiz(IMenuBiz menuBiz) {
 		this.menuBiz = menuBiz;
 		super.setBaseBiz(this.menuBiz);
+	}
+	
+	public void getMenuTree(){
+		Menu menu = menuBiz.get("0");
+		String jsonString = JSON.toJSONString(menu);
+		write(jsonString);
 	}
 
 }

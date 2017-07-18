@@ -21,6 +21,10 @@
 	<bean id="empAction" class="cn.itcast.erp.action.EmpAction" scope="prototype">
 		<property name="empBiz" ref="empBiz"></property>
 	</bean>
+	<!-- 登录-->
+	<bean id="loginAction" class="cn.itcast.erp.action.LoginAction" scope="prototype">
+		<property name="empBiz" ref="empBiz"></property>
+	</bean>
 	<!-- 商品 -->
 	<bean id="goodsAction" class="cn.itcast.erp.action.GoodsAction" scope="prototype">
 		<property name="goodsBiz" ref="goodsBiz"></property>
@@ -73,6 +77,8 @@
 	<bean id="supplierAction" class="cn.itcast.erp.action.SupplierAction" scope="prototype">
 		<property name="supplierBiz" ref="supplierBiz"></property>
 	</bean>
+	
+	
 
 
 </beans>

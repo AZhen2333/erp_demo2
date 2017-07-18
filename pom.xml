@@ -10,7 +10,8 @@
 		<spring.version>4.2.4.RELEASE</spring.version>
 		<struts.version>2.3.24</struts.version>
 		<slf4j.version>1.6.6</slf4j.version>
-		<log4j.version>1.2.12</log4j.version>   
+		<log4j.version>1.2.12</log4j.version> 
+		<shiro.ver>1.2.3</shiro.ver>  
 	</properties>
   
  
@@ -149,6 +150,32 @@
 			<version>2.5</version>
 			<scope>provided</scope>
 		</dependency>
+		
+		<dependency>
+        <groupId>org.apache.shiro</groupId>
+        <artifactId>shiro-core</artifactId>
+        <version>${shiro.ver}</version>
+    </dependency>
+
+    <dependency>
+        <groupId>org.apache.shiro</groupId>
+        <artifactId>shiro-web</artifactId>
+        <version>${shiro.ver}</version>
+    </dependency>
+
+    <dependency>
+        <groupId>org.apache.shiro</groupId>
+        <artifactId>shiro-spring</artifactId>
+        <version>${shiro.ver}</version>
+    </dependency>
+
+    <dependency>
+        <groupId>org.apache.shiro</groupId>
+        <artifactId>shiro-aspectj</artifactId>
+        <version>${shiro.ver}</version>
+    </dependency>
+		
+		
   
   
 	</dependencies>
