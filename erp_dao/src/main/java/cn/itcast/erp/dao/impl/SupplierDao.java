@@ -36,8 +36,13 @@ public class SupplierDao extends BaseDao<Supplier> implements ISupplierDao {
 			if(null != supplier1.getEmail() && supplier1.getEmail().trim().length()>0){
 				dc.add(Restrictions.like("email", supplier1.getEmail(), MatchMode.ANYWHERE));
 			}
-			if(null != supplier1.getType() && supplier1.getType().trim().length()>0){
+			/*if(null != supplier1.getType() && supplier1.getType().trim().length()>0){
 				dc.add(Restrictions.like("type", supplier1.getType(), MatchMode.ANYWHERE));
+			}*/
+			
+			//区分供应商或者客户
+			if(null != supplier1.getType() && supplier1.getType().trim().length()>0){
+				dc.add(Restrictions.eq("type", supplier1.getType()));
 			}
 
 		}

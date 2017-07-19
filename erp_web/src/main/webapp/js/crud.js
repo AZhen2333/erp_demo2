@@ -1,9 +1,14 @@
 //提交的方法名称
 var method = "";
+//查询条件
+var listParam="";
+
+var saveParam="";
+
 $(function(){
 	//加载表格数据
 	$('#grid').datagrid({
-		url:name + '_listByPage',
+		url:name + '_listByPage'+listParam,
 		columns:columns,
 		singleSelect: true,
 		pagination: true,
@@ -44,7 +49,7 @@ $(function(){
 				//用记输入的部门信息
 				var submitData= $('#editForm').serializeJSON();
 				$.ajax({
-					url: name + '_' + method,
+					url: name + '_' + method + saveParam,
 					data: submitData,
 					dataType: 'json',
 					type: 'post',

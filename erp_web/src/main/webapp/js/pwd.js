@@ -82,7 +82,7 @@ $(function(){
 				$('#editDlg').dialog('close');
 			}
 		}]
-	});`
+	});
 
 });
 
