@@ -36,6 +36,7 @@ $(function(){
 	if(typeof(height)!='undefined'){
 		_height=height;
 	}
+	
 	$('#editDlg').dialog({
 		title: '编辑',//窗口标题
 		width: 300,//窗口宽度
