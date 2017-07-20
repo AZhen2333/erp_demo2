@@ -92,7 +92,7 @@ public class BaseAction<T> {
 	public void listByPage() {
 		System.out.println("页码：" + page + " 记录数:" + rows);
 		int firstResult = (page - 1) * rows;
-		List<T> list = baseBiz.getListByPage(t1, t2, param, firstResult, rows);
+		List<T> list = baseBiz.getListByPage(t1 , t2, param, firstResult, rows);
 		long total = baseBiz.getCount(t1, t2, param);
 		// {total: total, rows:[]}
 		Map<String, Object> mapData = new HashMap<String, Object>();

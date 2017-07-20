@@ -44,6 +44,8 @@
 	<!-- 订单 -->
 	<bean id="ordersBiz" class="cn.itcast.erp.biz.impl.OrdersBiz">
 		<property name="ordersDao" ref="ordersDao"></property>
+		<property name="empDao" ref="empDao"></property>
+		<property name="supplierDao" ref="supplierDao"></property>
 	</bean>
 	<!-- 退货订单明细 -->
 	<bean id="returnorderdetailBiz" class="cn.itcast.erp.biz.impl.ReturnorderdetailBiz">
