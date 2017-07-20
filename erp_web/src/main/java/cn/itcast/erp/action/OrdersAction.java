@@ -1,9 +1,19 @@
 package cn.itcast.erp.action;
+
+import java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.alibaba.fastjson.JSON;
+
 import cn.itcast.erp.biz.IOrdersBiz;
+import cn.itcast.erp.entity.Emp;
+import cn.itcast.erp.entity.Orderdetail;
 import cn.itcast.erp.entity.Orders;
 
 /**
- * 订单Action 
+ * 订单Action
+ * 
  * @author Administrator
  *
  */
@@ -11,9 +21,39 @@ public class OrdersAction extends BaseAction<Orders> {
 
 	private IOrdersBiz ordersBiz;
 
+	private static final Logger log=LoggerFactory.getLogger(OrdersAction.class);
 	public void setOrdersBiz(IOrdersBiz ordersBiz) {
 		this.ordersBiz = ordersBiz;
 		super.setBaseBiz(this.ordersBiz);
+	}
+
+	private String json;
+	@Override
+	public void add() {
+		
+			Emp loginUser = getLoginUser();
+			log.info("loginuser:"+(loginUser==null?"":loginUser.getUuid()));
+			log.debug("orderdatails:"+json);
+			if(null==loginUser){
+				ajaxReturn(false, "请先登录");
+			}
+			try {
+			// 获取订单
+			Orders orders = getT();
+			// 设置下单员（登录用户）
+			orders.setCreater(getLoginUser().getUuid());
+			// 设置订单明细
+			List<Orderdetail> orderdetails = JSON.parseArray(json, Orderdetail.class);
+			orders.setOrderdetails(orderdetails);
+			ordersBiz.add(orders);
+			ajaxReturn(true, "新增订单成功");
+		} catch (Exception e) {
+			ajaxReturn(false, "新增订单失败");
+			log.info("新增失败原因：",e);
+		}
+	}
+	public void setJson(String json) {
+		this.json = json;
 	}
 
 }

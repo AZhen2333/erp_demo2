@@ -83,7 +83,37 @@ $(function(){
 		},{
 			text: '保存',
 			iconCls: 'icon-save',
-			handler: function(){}
+			handler: function(){
+				if(existEditIndex>-1){
+					$('#grid').datagrid('endEdit',existEditIndex);
+				}
+				//数据转json格式
+				var submitData= $('#orderForm').serializeJSON();
+				if((submitData['t.supplieruuid'])==""){
+					$.mesager.alter('提示',"请选择供应商",info);
+					return;
+				}
+				var rows=$('#grid').datagrid('getRows')
+				//将商品转json
+				submitData.json=JSON.stringify(rows);
+				alert(JSON.stringify($('#grid').datagrid("getData")));
+				$.ajax({
+					url: 'orders_add',
+					data:submitData,
+					dataType: 'json',
+					type: 'post',
+					success:function(rtn){
+						$.messager.alert("提示",rtn.message,'info',function(){
+							//清除供应商数据
+							$('#supplier').combogrid('clear');
+							//清除商品数据
+							$('#grid').datagrid('loadData',{total:0,rows:[],footer:[{num: '合计',money: 0}]});
+						});
+					}
+				});
+				
+				
+			}
 		}],
 	
 	});
@@ -93,6 +123,23 @@ $(function(){
 		num: '合计',
 		money: 0
 	}]);
+	
+	//供应商列表
+	$('#supplier').combogrid({ 
+		panelWidth:750,  
+	    url: 'supplier_list?t1.type=1',    
+	    idField: 'uuid',    
+	    textField: 'name',
+	    fitColumns:true,
+	    columns: [[    
+			{field:'uuid',title:'编号',width:100},
+			{field:'name',title:'名称',width:100},
+			{field:'address',title:'联系地址',width:100},
+			{field:'contact',title:'联系人',width:100},
+			{field:'tele',title:'联系电话',width:100},
+			{field:'email',title:'邮件地址',width:100},
+	    ]]    
+	});  
 	
 	
 });
