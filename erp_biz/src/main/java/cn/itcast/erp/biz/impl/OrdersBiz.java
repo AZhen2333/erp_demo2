@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import cn.itcast.erp.biz.IOrdersBiz;
+import cn.itcast.erp.biz.exception.ErpException;
 import cn.itcast.erp.dao.IEmpDao;
 import cn.itcast.erp.dao.IOrdersDao;
 import cn.itcast.erp.dao.ISupplierDao;
@@ -74,7 +75,7 @@ public class OrdersBiz extends BaseBiz<Orders> implements IOrdersBiz {
 		String empName = empNameMap.get(uuid);
 		if (null == empName) {
 			empName = empDao.get(uuid).getName();
-			empNameMap.put(uuid,empName);
+			empNameMap.put(uuid, empName);
 		}
 		return empName;
 	}
@@ -86,10 +87,10 @@ public class OrdersBiz extends BaseBiz<Orders> implements IOrdersBiz {
 		if (null == uuid) {
 			return null;
 		}
-		String supplierName =supplierNameMap .get(uuid);
+		String supplierName = supplierNameMap.get(uuid);
 		if (null == supplierName) {
 			supplierName = supplierDao.get(uuid).getName();
-			supplierNameMap.put(uuid,supplierName);
+			supplierNameMap.put(uuid, supplierName);
 		}
 		return supplierName;
 	}
@@ -105,5 +106,42 @@ public class OrdersBiz extends BaseBiz<Orders> implements IOrdersBiz {
 
 	public void setSupplierDao(ISupplierDao supplierDao) {
 		this.supplierDao = supplierDao;
+	}
+
+	/*
+	 * 采购订单审核
+	 */
+	@SuppressWarnings("static-access")
+	@Override
+	public void doCheck(Long uuid, Long empuuid) {
+		// 订单信息
+		Orders orders = ordersDao.get(uuid);
+		// 是否审核
+		if (!orders.getState().equals(orders.STATE_CREATE)) {
+			throw new ErpException("已审核");
+		}
+		// 封装审核员、审核时间、审核状态
+		orders.setChecker(empuuid);
+		orders.setChecktime(new Date());
+		orders.setState(orders.STATE_CHECK);
+
+	}
+
+	/*
+	 * 采购订单确认
+	 */
+	@Override
+	public void doStart(Long uuid, Long empuuid) {
+		// 订单信息
+		Orders orders = ordersDao.get(uuid);
+		// 是否审核
+		if (!orders.getState().equals(orders.STATE_CHECK)) {
+			throw new ErpException("已确定过了");
+		}
+		// 封装审核员、审核时间、审核状态
+		orders.setStarter(empuuid);
+		orders.setStarttime(new Date());
+		orders.setState(orders.STATE_START);
+
 	}
 }

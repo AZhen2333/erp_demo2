@@ -9,6 +9,10 @@ import java.util.List;
 public class Orders {	
 	/*未审核*/
 	public static final String STATE_CREATE="0";
+	/*已审核*/
+	public static final String STATE_CHECK="1";
+	/*已确定*/
+	public static final String STATE_START="2";
 	
 	/*采购订单*/
 	public static final String TYPE_IN="1";
