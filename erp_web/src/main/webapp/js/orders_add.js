@@ -1,9 +1,10 @@
 
 var existEditIndex=-1;
 $(function(){
-	$('#grid').datagrid({
+	$('#ordersgrid').datagrid({
         singleSelect:true,
         showFooter:true,
+        fitColumns:true,
         columns:[[
             {field:'goodsuuid',title:'商品编号',width:100,editor:{type:'numberbox',options:{
             	disabled:true
@@ -14,12 +15,19 @@ $(function(){
                 valueField:'name',    
                 textField:'name',
                 onSelect:function(goods){
+                	/**价格判断*/
+                	//采购价格
+                	var price=goods.inprice;
+                	//销售价格
+                	if(type==2){
+                		price=goods.outprice;
+                	}
                 	//获取商品编号的编辑器
                 	var goodsuuidEditor= getEditor('goodsuuid');
                 	$(goodsuuidEditor.target).val(goods.uuid);
                 	//获取商品价格的编辑器
                 	var priceEditor= getEditor('price');
-                	$(priceEditor.target).val(goods.inprice);
+                	$(priceEditor.target).val(price);
                 	
                 	var numEditor=getEditor('num');
                 	$(numEditor.target).select();
@@ -56,23 +64,23 @@ $(function(){
 			handler: function(){
 				if(existEditIndex>-1){
 					//点击新增行后，就结束编辑非新增行
-					$('#grid').datagrid('endEdit',existEditIndex);
+					$('#ordersgrid').datagrid('endEdit',existEditIndex);
 				}
 				//新增行
-				$('#grid').datagrid('appendRow',{
+				$('#ordersgrid').datagrid('appendRow',{
 					num:0,
 					money:0,
 				}),
 				
 				//计算最新行的下表，下边0开始，最大行数-1
-				existEditIndex=$('#grid').datagrid('getRows').length-1;
+				existEditIndex=$('#ordersgrid').datagrid('getRows').length-1;
 				//开启编辑最新的一行
-				$('#grid').datagrid('beginEdit',existEditIndex);
+				$('#ordersgrid').datagrid('beginEdit',existEditIndex);
 				//单击编辑当前行
-				$('#grid').datagrid({onClickRow:function(rowIndex, rowData){
-						$('#grid').datagrid('endEdit',existEditIndex);
+				$('#ordersgrid').datagrid({onClickRow:function(rowIndex, rowData){
+						$('#ordersgrid').datagrid('endEdit',existEditIndex);
 						existEditIndex=rowIndex;
-						$('#grid').datagrid('beginEdit',existEditIndex);
+						$('#ordersgrid').datagrid('beginEdit',existEditIndex);
 						//对数量列绑定键盘事件
 						bindGridEvent();
 					}
@@ -85,7 +93,7 @@ $(function(){
 			iconCls: 'icon-save',
 			handler: function(){
 				if(existEditIndex>-1){
-					$('#grid').datagrid('endEdit',existEditIndex);
+					$('#ordersgrid').datagrid('endEdit',existEditIndex);
 				}
 				//数据转json格式
 				var submitData= $('#orderForm').serializeJSON();
@@ -93,12 +101,12 @@ $(function(){
 					$.mesager.alter('提示',"请选择供应商",info);
 					return;
 				}
-				var rows=$('#grid').datagrid('getRows')
+				var rows=$('#ordersgrid').datagrid('getRows')
 				//将商品转json
 				submitData.json=JSON.stringify(rows);
-				alert(JSON.stringify($('#grid').datagrid("getData")));
+				alert(JSON.stringify($('#ordersgrid').datagrid("getData")));
 				$.ajax({
-					url: 'orders_add',
+					url: 'orders_add?t.type='+type,
 					data:submitData,
 					dataType: 'json',
 					type: 'post',
@@ -107,7 +115,10 @@ $(function(){
 							//清除供应商数据
 							$('#supplier').combogrid('clear');
 							//清除商品数据
-							$('#grid').datagrid('loadData',{total:0,rows:[],footer:[{num: '合计',money: 0}]});
+							$('#ordersgrid').datagrid('loadData',{total:0,rows:[],footer:[{num: '合计',money: 0}]});
+							//关闭采购申请窗口
+							$('#addOrdersDlg').dialog('close');
+							$('#grid').datagrid('reload');
 						});
 					}
 				});
@@ -119,7 +130,7 @@ $(function(){
 	});
 	
 	//加载行脚数据
-	$('#grid').datagrid('reloadFooter',[{
+	$('#ordersgrid').datagrid('reloadFooter',[{
 		num: '合计',
 		money: 0
 	}]);
@@ -127,7 +138,7 @@ $(function(){
 	//供应商列表
 	$('#supplier').combogrid({ 
 		panelWidth:750,  
-	    url: 'supplier_list?t1.type=1',    
+	    url: 'supplier_list?t1.type='+type,    
 	    idField: 'uuid',    
 	    textField: 'name',
 	    fitColumns:true,
@@ -149,7 +160,7 @@ $(function(){
  * 指定编辑器
  * */
 function getEditor(field){
-	return $('#grid').datagrid('getEditor', {index:existEditIndex,field:field});
+	return $('#ordersgrid').datagrid('getEditor', {index:existEditIndex,field:field});
 }
 
 
@@ -169,12 +180,12 @@ function bindGridEvent(){
  * */
 function sum(){
 	var totalMoney=0;
-	var rows= $('#grid').datagrid('getRows');
+	var rows= $('#ordersgrid').datagrid('getRows');
 	$.each(rows,function(i,row){
 		totalMoney+=parseFloat(row.money);
 	});
 	totalMoney=totalMoney.toFixed(2);
-	$('#grid').datagrid('reloadFooter',[{num:'合计',money:totalMoney}]);
+	$('#ordersgrid').datagrid('reloadFooter',[{num:'合计',money:totalMoney}]);
 }
 
 
@@ -196,7 +207,7 @@ function cal(){
 	money=money.toFixed(2);
 	$(moneyEditor.target).val(money);
 	//把金额更新到grid里面的数据源里去
-	$('#grid').datagrid('getRows')[existEditIndex].money = money;
+	$('#ordersgrid').datagrid('getRows')[existEditIndex].money = money;
 }
 
 /*
@@ -204,10 +215,10 @@ function cal(){
  * */
  function deleteRow(index){
 	 //关闭编辑
-	 $('#grid').datagrid('deleteRow',index);
+	 $('#ordersgrid').datagrid('deleteRow',index);
 	 //获取页面数据
-	 var data=$('#grid').datagrid('getData');
+	 var data=$('#ordersgrid').datagrid('getData');
 	 //重新加载本地数据
-	 $('#grid').datagrid('loadData',data);
+	 $('#ordersgrid').datagrid('loadData',data);
 	 sum();
  }

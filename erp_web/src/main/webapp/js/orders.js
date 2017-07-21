@@ -1,13 +1,29 @@
+var oper=Request['oper'];
+var type=Request['type'] * 1;
 $(function(){
-	var url="orders_listByPage?t1.type=1";
-	if(Request['oper'] == 'doCheck'){
-		url +='&t1.state=0';
+	var url="orders_listByPage";
+	if(oper == 'orders'){
+		url +='?t1.type='+type;
 	}
-	if(Request['oper'] == 'doStart'){
-		url +='&t1.state=1';
+	//审核
+	if(oper == 'doCheck'){
+		url +='?type=1&t1.state=0';
 	}
-	if(Request['oper'] == 'doInStore'){
-		url +='&t1.state=2';
+	//确定
+	if(oper == 'doStart'){
+		url +='?type=1&t1.state=1';
+	}
+	//入库
+	if(oper == 'doInStore'){
+		url +='?type=1&t1.state=2';
+	}
+	//出库，销售
+	if(oper == 'doInStore'){
+		url +='?type=2&t2.state=0';
+	}
+	
+	if(oper == 'myListByPage'){
+		url ='orders_myListByPage?t1.type='+type;
 	}
 	
 	//加载表格数据
@@ -126,6 +142,24 @@ $(function(){
 		});
 	}
 
+	//添加新增按钮
+	if(Request['oper'] == 'myListByPage'){
+		var btnTxt='采购申请';
+		if(type==2){
+			btnTxt='销售录入';
+			$('#ordersupplier').html('客户');
+		}
+		$('#grid').datagrid({
+			toolbar: [{
+				text:btnTxt,
+				iconCls: 'icon-add',
+				handler: function(){
+					$('#addOrdersDlg').dialog('open');
+				}
+			}]
+		});
+	}
+
 	//动态添加详情窗口工具栏
 	if(orderDlgToolbar.length > 0){
 		orderDlgCfg.toolbar = orderDlgToolbar;
@@ -145,6 +179,16 @@ $(function(){
 			handler:doInStore
 		}]
 	});
+	
+	//采购申请窗口
+	$('#addOrdersDlg').dialog({
+		width:710,
+		height:400,
+		title:'采购申请',
+		modal:true,
+		closed:true
+	});
+
 	
 });
 

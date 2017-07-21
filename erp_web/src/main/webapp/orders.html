@@ -13,6 +13,7 @@
 <script type="text/javascript" src="js/date.js"></script>
 <script type="text/javascript" src="ui/request.js"></script>
 <script type="text/javascript" src="js/orders.js"></script>
+<script type="text/javascript" src="js/orders_add.js"></script>
 	
 </head>
 <body>
@@ -76,6 +77,13 @@
 			</tr>
 		</table>
 	</form>
+</div>
+<div id="addOrdersDlg" style="padding:4px;">
+	<form id="orderForm" >
+		<span id="ordersupplier">供应商</span><input id="supplier" name="t.supplieruuid"/>
+	</form>
+	<div style="height:2px;"></div>
+	<table id="ordersgrid"></div>
 </div>
 </body>
 </html>

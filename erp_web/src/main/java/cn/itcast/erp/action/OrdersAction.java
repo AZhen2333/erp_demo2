@@ -33,7 +33,6 @@ public class OrdersAction extends BaseAction<Orders> {
 
 	@Override
 	public void add() {
-
 		Emp loginUser = getLoginUser();
 		log.info("loginuser:" + (loginUser == null ? "" : loginUser.getUuid()));
 		log.debug("orderdatails:" + json);
@@ -100,6 +99,20 @@ public class OrdersAction extends BaseAction<Orders> {
 		
 	}
 
+	
+	/*
+	 * 只显示我的订单
+	 * */
+	public void myListByPage(){
+		if(null==getT1()){
+			setT1(new Orders());
+		}
+		Emp loginUser = getLoginUser();
+		getT1().setChecker(loginUser.getUuid());
+		super.listByPage();
+	}
+	
+	
 	public void setJson(String json) {
 		this.json = json;
 	}

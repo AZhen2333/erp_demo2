@@ -35,7 +35,7 @@ public class OrdersBiz extends BaseBiz<Orders> implements IOrdersBiz {
 		// 订单状态
 		orders.setState(orders.STATE_CREATE);
 		// 订单类型
-		orders.setType(orders.TYPE_IN);
+//		orders.setType(orders.TYPE_IN);
 		// 合计金额
 		double totalMoney = 0;
 		for (Orderdetail orderdetail : orders.getOrderdetails()) {
