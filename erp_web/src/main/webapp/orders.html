@@ -11,7 +11,7 @@
 <script type="text/javascript" src="ui/locale/easyui-lang-zh_CN.js"></script>
 <script type="text/javascript" src="ui/jquery.serializejson.min.js"></script>
 <script type="text/javascript" src="js/date.js"></script>
-<script type="text/javascript" src="js/request.js"></script>
+<script type="text/javascript" src="ui/request.js"></script>
 <script type="text/javascript" src="js/orders.js"></script>
 	
 </head>
@@ -50,6 +50,32 @@
 	</table>
 	<!-- 订单明细 -->
 	<table id="itemgrid"></table>
-	</div>
+</div>
+<div id="itemDlg" style="padding:4px;">
+	<form id="itemForm">
+		<table class="hovertable">
+			<tr>
+				<td class="bg" width="30%">商品编号<input type="hidden" id="id" name="id" /></td>
+				<td id="goodsuuid" width="70%"></td>
+			</tr>
+			<tr>
+				<td class="bg">商品名称</td>
+				<td id="goodsname"></td>
+			</tr>
+			<tr>
+				<td class="bg">数量</td>
+				<td id="num"></td>
+			</tr>
+			<tr>
+				<td class="bg">仓库</td>
+				<td><input name="storeuuid" class="easyui-combobox" data-options="
+					url:'store_myList',
+					valueField:'uuid',
+					textField:'name'
+				" /></td>
+			</tr>
+		</table>
+	</form>
+</div>
 </body>
 </html>

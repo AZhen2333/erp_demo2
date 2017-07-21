@@ -6,6 +6,7 @@ import cn.itcast.erp.entity.Orderdetail;
  *
  */
 public interface IOrderdetailBiz extends IBaseBiz<Orderdetail>{
-
+	//更新明细
+	void doInStore(Long uuid,Long empuuid,Long storeuuid);
 }
 

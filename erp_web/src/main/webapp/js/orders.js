@@ -1,13 +1,16 @@
 $(function(){
 	var url="orders_listByPage?t1.type=1";
 	if(Request['oper'] == 'doCheck'){
-		url+="&t1.state=0";
+		url +='&t1.state=0';
 	}
 	if(Request['oper'] == 'doStart'){
 		url +='&t1.state=1';
 	}
+	if(Request['oper'] == 'doInStore'){
+		url +='&t1.state=2';
+	}
 	
-	
+	//加载表格数据
 	$('#grid').datagrid({
 		url:url,
 		columns:[[
@@ -47,21 +50,7 @@ $(function(){
 	
 	});
 	
-	
-	$('#ordersDlg').dialog({
-		title: '订单明细',//窗口标题
-		width: 700,//窗口宽度
-		height: 320,//窗口高度
-		closed: true,//窗口是是否为关闭状态, true：表示关闭
-		modal: true,//模式窗口
-		toolbar: [{
-			iconCls: 'icon-search',
-			handler: doStart
-//			handler: doCheck
-		}]
-	});
-	
-	
+
 	//订单明细表格
 	$('#itemgrid').datagrid({
 		columns:[[
@@ -76,6 +65,22 @@ $(function(){
 		singleSelect: true,
 		fitColumns:true,
 	});
+	
+	/*订单详情弹窗*/
+	/*$('#ordersDlg').dialog({
+		title: '订单明细',//窗口标题
+		width: 700,//窗口宽度
+		height: 320,//窗口高度
+		closed: true,//窗口是是否为关闭状态, true：表示关闭
+		modal: true,//模式窗口
+		toolbar: [{
+			iconCls: 'icon-search',
+			handler: doStart
+//			handler: doCheck
+		}]
+	});*/
+	
+	
 
 	
 	//订单详情窗口的配置
@@ -89,6 +94,7 @@ $(function(){
 	
 	//订单详情窗口的工具栏
 	var orderDlgToolbar=new Array();
+	
 	//审核按钮
 	if(Request['oper'] == 'doCheck'){
 		orderDlgToolbar.push({
@@ -106,13 +112,57 @@ $(function(){
 				handler:doStart
 		});
 	}	
+	
+	//双击入库事件
+	if(Request['oper'] == 'doInStore'){
+		$('#itemgrid').datagrid({
+			onDblClickRow: function(rowIndex, rowData){
+				$('#itemDlg').dialog('open');
+				$('#id').val(rowData.uuid);
+				$('#goodsname').html(rowData.goodsname);
+				$('#goodsuuid').html(rowData.goodsuuid);
+				$('#num').html(rowData.num);
+			}
+		});
+	}
 
 	//动态添加详情窗口工具栏
-	if(orderDlgToolbar.length>0){
-		orderDlgCfg.toolbar=orderDlgToolbar;
+	if(orderDlgToolbar.length > 0){
+		orderDlgCfg.toolbar = orderDlgToolbar;
 	}
 	$('#ordersDlg').dialog(orderDlgCfg);
+
+	//入库弹窗
+	$('#itemDlg').dialog({
+		title: '入库',//窗口标题
+		width: 300,//窗口宽度
+		height: 200,//窗口高度
+		closed: true,//窗口是是否为关闭状态, true：表示关闭
+		modal: true,//模式窗口
+		buttons:[{
+			text:'入库',
+			iconCls:'icon-save',
+			handler:doInStore
+		}]
+	});
+	
 });
+
+/**/
+/**格式化订单状态
+ * @param value
+ */
+function formatState(value){
+	//采购: 0:未审核 1:已审核, 2:已确认, 3:已入库
+	switch(value*1){
+	case 0:return '未审核';
+	case 1:return '已审核';
+	case 2:return '已确定';
+	case 3:return '已入库';
+	default:return '';
+	}
+}
+
 /**状态
  * @param value
  * @returns
@@ -134,21 +184,6 @@ function formatDate(value){
 	return new Date(value).Format('yyyy-MM-dd');
 }
 
-/**/
-/**格式化订单状态
- * @param value
- */
-function formatState(value){
-	//采购: 0:未审核 1:已审核, 2:已确认, 3:已入库
-	switch(value*1){
-	case 0:return '未审核';
-	case 1:return '已审核';
-	case 2:return '已确定';
-	case 3:return '已入库';
-	default:return '';
-	}
-}
-
 /**
  * 审核
  */
@@ -164,7 +199,7 @@ function doCheck(){
 					$.messager.alert("提示",rtn.message,'info',function(){
 						if(rtn.success){
 							$('#ordersDlg').dialog("close");
-							$('#grid').datagrid('reload');
+							$('#ordersDlg').datagrid('reload');
 						}
 					});
 				}
@@ -189,6 +224,52 @@ function doStart(){
 						if(rtn.success){
 							$('#ordersDlg').dialog("close");
 							$('#grid').datagrid('reload');
+						}
+					});
+				}
+			});
+		}
+	});
+}
+
+/**
+ * 入库
+ */
+function doInStore(){
+	$.messager.confirm("确认","确定要入库吗？",function(yes){
+		if(yes){
+			var submitData=$('#itemForm').serializeJSON();
+			if(submitData.storeuuid==''){
+				$.messager.alert('请选择仓库');
+				return;
+			}
+			$.ajax({
+				url:'orderdetail_doInStore',
+				data:submitData,
+				dataType:'json',
+				type:'post',
+				success:function(rtn){
+					$.messager.alert("提示",rtn.message,'info',function(){
+						if(rtn.success){
+							$('#itemDlg').dialog("close");
+							var row = $('#itemgrid').datagrid('getSelected');
+							row.state = '1';
+							//取出数据
+							var data = $('#itemgrid').datagrid('getData');
+							//加载本地数据
+							$('#itemgrid').datagrid('loadData',data);
+							var flg = true;
+							$.each(data.rows,function(i,row){
+								if(row.state * 1 == 0){
+									flg = false;
+									return false;//跳出循环
+								}
+							});
+							if(flg == true){
+								//关闭详情窗口
+								$('#ordersDlg').dialog('close');
+								$('#grid').datagrid('reload');
+							}
 						}
 					});
 				}

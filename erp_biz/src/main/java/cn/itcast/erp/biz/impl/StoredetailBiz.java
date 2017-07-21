@@ -1,6 +1,7 @@
 package cn.itcast.erp.biz.impl;
 import cn.itcast.erp.biz.IStoredetailBiz;
 import cn.itcast.erp.dao.IStoredetailDao;
+import cn.itcast.erp.dao.IStoreoperDao;
 import cn.itcast.erp.entity.Storedetail;
 /**
  * 仓库库存业务逻辑类

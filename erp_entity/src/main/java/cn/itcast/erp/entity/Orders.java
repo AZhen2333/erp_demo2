@@ -13,6 +13,8 @@ public class Orders {
 	public static final String STATE_CHECK="1";
 	/*已确定*/
 	public static final String STATE_START="2";
+	/*已入库*/
+	public static final String STATE_END="3";
 	
 	/*采购订单*/
 	public static final String TYPE_IN="1";

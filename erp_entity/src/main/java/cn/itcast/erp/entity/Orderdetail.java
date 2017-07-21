@@ -7,6 +7,11 @@ import com.alibaba.fastjson.annotation.JSONField;
  * @author Administrator *
  */
 public class Orderdetail {	
+	/** 未入库 */
+	public static final String STATE_NOT_IN = "0";
+	/** 已入库 */
+	public static final String STATE_IN = "1"; 
+	
 	private Long uuid;//编号
 	private Long goodsuuid;//商品编号
 	private String goodsname;//商品名称
