@@ -24,12 +24,18 @@ public class StoreDao extends BaseDao<Store> implements IStoreDao {
 			if(null != store1.getName() && store1.getName().trim().length()>0){
 				dc.add(Restrictions.like("name", store1.getName(), MatchMode.ANYWHERE));
 			}
-			if(null!=store1.getEmpuuid()){
+			//查询员工下的仓库
+			if(null != store1.getEmpuuid()){
 				dc.add(Restrictions.eq("empuuid", store1.getEmpuuid()));
 			}
-
 		}
 		return dc;
 	}
 
+	public String getName(Long uuid){
+		if(null==uuid){
+			return null;
+		}
+		return super.get(uuid).getName();
+	}
 }

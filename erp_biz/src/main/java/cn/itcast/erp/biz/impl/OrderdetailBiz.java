@@ -28,18 +28,19 @@ public class OrderdetailBiz extends BaseBiz<Orderdetail> implements IOrderdetail
 	/*
 	 * 入库
 	 */
+	@SuppressWarnings("static-access")
 	@Override
-	public void doInStore(Long uuid, Long empuid, Long storeuuid) {
+	public void doInStore(Long uuid, Long empuuid, Long storeuuid) {
 		/* * 更新订单明细 */
 		Orderdetail orderdetail = orderdetailDao.get(uuid);
 		// 检查是否入库
-		if (orderdetail.STATE_IN.equals(orderdetail.getState())) {
+		if (!orderdetail.STATE_NOT_IN.equals(orderdetail.getState())) {
 			throw new ErpException("已经入库了");
 		}
 		// 更新入库状态
 		orderdetail.setState(orderdetail.STATE_IN);
 		// 封装仓库管理员
-		orderdetail.setEnder(empuid);
+		orderdetail.setEnder(empuuid);
 		// 更新仓库编号
 		orderdetail.setStoreuuid(storeuuid);
 		// 入库日期
@@ -62,7 +63,7 @@ public class OrderdetailBiz extends BaseBiz<Orderdetail> implements IOrderdetail
 
 		/* * 更新仓库日志 */
 		Storeoper storeoperLog = new Storeoper();
-		storeoperLog.setEmpuuid(empuid);
+		storeoperLog.setEmpuuid(empuuid);
 		storeoperLog.setGoodsuuid(orderdetail.getGoodsuuid());
 		storeoperLog.setNum(orderdetail.getNum());
 		storeoperLog.setOpertime(orderdetail.getEndtime());
@@ -79,7 +80,7 @@ public class OrderdetailBiz extends BaseBiz<Orderdetail> implements IOrderdetail
 		long count = orderdetailDao.getCount(queryOrderdetail, null, null);
 		if (count == 0) {// 订单内的每条记录都已经入库后，才更新订单
 			orders.setEndtime(orderdetail.getEndtime());// 入库时间
-			orders.setEnder(orderdetail.getEnder());// 仓库管理员
+			orders.setEnder(empuuid);// 仓库管理员
 			orders.setState(Orders.STATE_END);// 入库状态
 		}
 

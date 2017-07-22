@@ -22,7 +22,7 @@ public class StoredetailBiz extends BaseBiz<Storedetail> implements IStoredetail
 	private IGoodsDao goodsDao;
 	private IStoreDao storeDao;
 
-	private String getGoodsName(Long uuid, Map<Long, String> goodsNameMap) {
+	/*private String getGoodsName(Long uuid, Map<Long, String> goodsNameMap) {
 		if (null == uuid) {
 			return null;
 		}
@@ -44,16 +44,15 @@ public class StoredetailBiz extends BaseBiz<Storedetail> implements IStoredetail
 			storeNameMap.put(uuid, storeName);
 		}
 		return storeName;
-	}
+	}*/
 
-	public List<Storedetail> getListByPage(Storedetail t1, Storedetail t2, Object param, int firstResult,
-			int maxResults) {
-		List<Storedetail> list = super.getListByPage(t1, t2, param, firstResult, maxResults);
-		Map<Long, String> goodsNameMap = new HashMap<Long, String>();
-		Map<Long, String> storeNameMap = new HashMap<Long, String>();
-		for (Storedetail sd : list) {
-			sd.setGoodsName(getGoodsName(sd.getGoodsuuid(), goodsNameMap));
-			sd.setStoreName(getStoreName(sd.getStoreuuid(), storeNameMap));
+	public List<Storedetail> getListByPage(Storedetail t1,Storedetail t2,Object param,int firstResult, int maxResults){
+		List<Storedetail> list = super.getListByPage(t1,t2,param,firstResult, maxResults);
+		Map<Long,String> goodsNameMap = new HashMap<Long, String>();
+		Map<Long,String> storeNameMap = new HashMap<Long, String>();
+		for(Storedetail sd : list){
+			sd.setGoodsName(getName(sd.getGoodsuuid(),goodsNameMap,goodsDao));
+			sd.setStoreName(getName(sd.getStoreuuid(),storeNameMap,storeDao));
 		}
 		return list;
 	}

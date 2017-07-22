@@ -1,6 +1,9 @@
 package cn.itcast.erp.biz;
 
 import java.util.List;
+import java.util.Map;
+
+import cn.itcast.erp.dao.IBaseDao;
 
 /**
  * 通用业务逻辑接口
@@ -37,8 +40,10 @@ public interface IBaseBiz<T> {
 	 */
 	public long getCount(T t1,T t2,Object param)
 	
-	;
-
+	/*
+	 * 获取名字
+	 * */;
+	public String getName(Long uuid,Map<Long, String> nameMap,IBaseDao<?> dao);
 	
 	/**
 	 * 新增

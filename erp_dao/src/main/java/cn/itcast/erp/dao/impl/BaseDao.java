@@ -119,4 +119,10 @@ public class BaseDao<T> extends HibernateDaoSupport implements IBaseDao<T> {
 		
 		return null;
 	}
+
+	@Override
+	public String getName(Long uuid) {
+		return null;
+		
+	}
 }

@@ -44,5 +44,12 @@ public class GoodsDao extends BaseDao<Goods> implements IGoodsDao {
 		}
 		return dc;
 	}
+	
+	public String getName(Long uuid){
+		if(null==uuid){
+			return null;
+		}
+		return super.get(uuid).getName();
+	}
 
 }
