@@ -28,6 +28,7 @@ public class OrdersBiz extends BaseBiz<Orders> implements IOrdersBiz {
 	private IEmpDao empDao;
 	private ISupplierDao supplierDao;
 
+	@SuppressWarnings("static-access")
 	@Override // 添加采购订单
 	public void add(Orders orders) {
 		// 生成日期
@@ -35,18 +36,23 @@ public class OrdersBiz extends BaseBiz<Orders> implements IOrdersBiz {
 		// 订单状态
 		orders.setState(orders.STATE_CREATE);
 		// 订单类型
-//		orders.setType(orders.TYPE_IN);
+		// orders.setType(orders.TYPE_IN);
 		// 合计金额
 		double totalMoney = 0;
 		for (Orderdetail orderdetail : orders.getOrderdetails()) {
 			totalMoney += orderdetail.getMoney();
 			orderdetail.setOrders(orders);
+			// 设置明细的状态
+			orderdetail.setState(Orderdetail.STATE_NOT_IN);
 		}
 		orders.setTotalmoney(totalMoney);
 
 		ordersDao.add(orders);
 	}
 
+	/*
+	 * 订单查询
+	 */
 	public List<Orders> getListByPage(Orders t1, Orders t2, Object param, int firstResult, int maxResults) {
 		// 通过父类，获取orders分页
 		List<Orders> list = super.getListByPage(t1, t2, param, firstResult, maxResults);

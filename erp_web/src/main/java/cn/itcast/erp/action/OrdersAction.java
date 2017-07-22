@@ -35,9 +35,9 @@ public class OrdersAction extends BaseAction<Orders> {
 	public void add() {
 		Emp loginUser = getLoginUser();
 		log.info("loginuser:" + (loginUser == null ? "" : loginUser.getUuid()));
-		log.debug("orderdatails:" + json);
 		if (null == loginUser) {
 			ajaxReturn(false, "请先登录");
+			return;
 		}
 		try {
 			// 获取订单
@@ -51,7 +51,7 @@ public class OrdersAction extends BaseAction<Orders> {
 			ajaxReturn(true, "新增订单成功");
 		} catch (Exception e) {
 			ajaxReturn(false, "新增订单失败");
-			log.info("新增失败原因：", e);
+			log.error("新增失败原因：", e);
 		}
 	}
 

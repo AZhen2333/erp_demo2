@@ -7,19 +7,19 @@ $(function(){
 	}
 	//审核
 	if(oper == 'doCheck'){
-		url +='?type=1&t1.state=0';
+		url +='?t1.type=1&t1.state=0';
 	}
 	//确定
 	if(oper == 'doStart'){
-		url +='?type=1&t1.state=1';
+		url +='?t1.type=1&t1.state=1';
 	}
 	//入库
 	if(oper == 'doInStore'){
-		url +='?type=1&t1.state=2';
+		url +='?t1.type=1&t1.state=2';
 	}
 	//出库，销售
-	if(oper == 'doInStore'){
-		url +='?type=2&t2.state=0';
+	if(oper == 'doOutStore'){
+		url +='?t1.type=2&t2.state=0';
 	}
 	
 	if(oper == 'myListByPage'){
@@ -130,7 +130,7 @@ $(function(){
 	}	
 	
 	//双击入库事件
-	if(Request['oper'] == 'doInStore'){
+	if(oper == 'doInStore' || oper == 'doOutStore'){
 		$('#itemgrid').datagrid({
 			onDblClickRow: function(rowIndex, rowData){
 				$('#itemDlg').dialog('open');
@@ -166,17 +166,21 @@ $(function(){
 	}
 	$('#ordersDlg').dialog(orderDlgCfg);
 
-	//入库弹窗
+	//出、入库弹窗
+	var dlgTitle ='入库';
+	if(type==2){
+		dlgTitle='出库';
+	}
 	$('#itemDlg').dialog({
-		title: '入库',//窗口标题
+		title:dlgTitle,//窗口标题
 		width: 300,//窗口宽度
 		height: 200,//窗口高度
 		closed: true,//窗口是是否为关闭状态, true：表示关闭
 		modal: true,//模式窗口
 		buttons:[{
-			text:'入库',
+			text:dlgTitle,
 			iconCls:'icon-save',
-			handler:doInStore
+			handler:doInOutStore
 		}]
 	});
 	
@@ -198,12 +202,22 @@ $(function(){
  */
 function formatState(value){
 	//采购: 0:未审核 1:已审核, 2:已确认, 3:已入库
-	switch(value*1){
-	case 0:return '未审核';
-	case 1:return '已审核';
-	case 2:return '已确定';
-	case 3:return '已入库';
-	default:return '';
+	if(type==1){
+		switch(value*1){
+		case 0:return '未审核';
+		case 1:return '已审核';
+		case 2:return '已确定';
+		case 3:return '已入库';
+		default:return '';
+		}
+	}
+	
+	if(type==2){
+		switch(value*1){
+		case 0: return '未出库';
+		case 1: return '已出库';
+		default: return '';
+		}
 	}
 }
 
@@ -279,8 +293,14 @@ function doStart(){
 /**
  * 入库
  */
-function doInStore(){
-	$.messager.confirm("确认","确定要入库吗？",function(yes){
+function doInOutStore(){
+	var url='orderdetail_doInStore';
+	var message='确定要入库吗？';
+	if(type==2){
+		url='orderdetail_doOutStore';
+		message='确定要出库吗？';
+	}
+	$.messager.confirm("确认",message,function(yes){
 		if(yes){
 			var submitData=$('#itemForm').serializeJSON();
 			if(submitData.storeuuid==''){
@@ -288,7 +308,7 @@ function doInStore(){
 				return;
 			}
 			$.ajax({
-				url:'orderdetail_doInStore',
+				url:url,
 				data:submitData,
 				dataType:'json',
 				type:'post',

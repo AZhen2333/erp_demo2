@@ -33,10 +33,10 @@ public class OrderdetailBiz extends BaseBiz<Orderdetail> implements IOrderdetail
 		/* * 更新订单明细 */
 		Orderdetail orderdetail = orderdetailDao.get(uuid);
 		// 检查是否入库
-		if (!orderdetail.STATE_NOT_IN.equals(orderdetail.getState())) {
+		if (orderdetail.STATE_IN.equals(orderdetail.getState())) {
 			throw new ErpException("已经入库了");
 		}
-		// 更该入库状态
+		// 更新入库状态
 		orderdetail.setState(orderdetail.STATE_IN);
 		// 封装仓库管理员
 		orderdetail.setEnder(empuid);
@@ -81,6 +81,64 @@ public class OrderdetailBiz extends BaseBiz<Orderdetail> implements IOrderdetail
 			orders.setEndtime(orderdetail.getEndtime());// 入库时间
 			orders.setEnder(orderdetail.getEnder());// 仓库管理员
 			orders.setState(Orders.STATE_END);// 入库状态
+		}
+
+	}
+
+	/*
+	 * 出库
+	 */
+	public void doOutStore(Long uuid, Long empuuid, Long storeuuid) {
+		/* 更新库存详单 */
+		// 查询出库单
+		Orderdetail orderdetail = orderdetailDao.get(uuid);
+		// 判断是否已出库
+		if (Orderdetail.STATE_OUT.equals(orderdetail.getState())) {
+			throw new ErpException("已经出库了");
+		}
+		// 更新状态
+		orderdetail.setState(Orderdetail.STATE_OUT);
+		// 更新库管员
+		orderdetail.setEnder(empuuid);
+		// 更新仓库编号
+		orderdetail.setStoreuuid(storeuuid);
+		// 更新出库日期
+		orderdetail.setEndtime(new Date());
+
+		/* 更新库存 */
+		Storedetail storedetail = new Storedetail();
+		storedetail.setStoreuuid(storeuuid);
+		storedetail.setGoodsuuid(orderdetail.getGoodsuuid());
+		List<Storedetail> storedetailsList = storedetailDao.getList(storedetail, null, null);
+		if (storedetailsList.size() > 0) {
+			storedetail = storedetailsList.get(0);
+			if (storedetail.getNum() < orderdetail.getNum()) {
+				throw new ErpException("库存不足");
+			}
+			storedetail.setNum(storedetail.getNum() - orderdetail.getNum());
+		}
+
+		/* 更新仓库操作记录 */
+		Storeoper storeoperLog = new Storeoper();
+		storeoperLog.setEmpuuid(empuuid);
+		storeoperLog.setGoodsuuid(orderdetail.getGoodsuuid());
+		storeoperLog.setNum(orderdetail.getNum());
+		storeoperLog.setOpertime(orderdetail.getEndtime());
+		storeoperLog.setStoreuuid(storeuuid);
+		storeoperLog.setType(Storeoper.TYPE_OUT);
+		storeoperDao.add(storeoperLog);
+
+		/* 更新订单 */
+		Orders orders = orderdetail.getOrders();
+		// 查看库存是否已更新完
+		Orderdetail queryOrder = new Orderdetail();
+		queryOrder.setOrders(orders);
+		queryOrder.setState(Orderdetail.STATE_NOT_OUT);
+		long count = storedetailDao.getCount(storedetail, null, null);
+		if (count == 0) {
+			orders.setEndtime(new Date());
+			orders.setEnder(empuuid);
+			orders.setState(Orders.STATE_END);
 		}
 
 	}
