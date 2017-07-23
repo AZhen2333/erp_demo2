@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>销售趋势分析表</title>
+<link rel="stylesheet" type="text/css" href="ui/themes/default/easyui.css">
+<link rel="stylesheet" type="text/css" href="ui/themes/icon.css">
+<link rel="stylesheet" type="text/css" href="css/table.css">
+<script type="text/javascript" src="ui/jquery.min.js"></script>
+<script type="text/javascript" src="ui/jquery.easyui.min.js"></script>
+<script type="text/javascript" src="ui/locale/easyui-lang-zh_CN.js"></script>
+<script type="text/javascript" src="ui/jquery.serializejson.min.js"></script>
+<script type="text/javascript" src="js/date.js"></script>
+<script type="text/javascript" src="js/report_trend.js"></script>
+<script type="text/javascript" src="js/highcharts.js"></script>
+</head>
+<body class="easyui-layout">
+<div>
+	<form id="searchForm">
+		年份<input id="yearCob" class="easyui-combobox" style="width:200px"
+				 data-options=
+				 "valueField:'year',
+				 textField:'year',
+				 url:'json/year.json'";>
+		<button type="button" id="btnSearch">查询</button>
+	</form>
+	<table id="grid"></table>
+</div>
+<div data-options="region:'east',title:'销售趋势图',split:true"
+	 style="width:600px;">
+	 <div id="highCharts"></div>
+</div> 
+</body>
+</html>
