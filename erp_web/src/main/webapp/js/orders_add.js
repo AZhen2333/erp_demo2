@@ -149,7 +149,8 @@ $(function(){
 			{field:'contact',title:'联系人',width:100},
 			{field:'tele',title:'联系电话',width:100},
 			{field:'email',title:'邮件地址',width:100},
-	    ]]    
+	    ]],    
+		mode:'remote'
 	});  
 	
 	

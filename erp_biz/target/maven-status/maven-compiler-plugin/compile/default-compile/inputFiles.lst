@@ -15,6 +15,7 @@ D:\erp\erp_parent\erp_biz\src\main\java\cn\itcast\erp\biz\impl\DepBiz.java
 D:\erp\erp_parent\erp_biz\src\main\java\cn\itcast\erp\biz\IOrdersBiz.java
 D:\erp\erp_parent\erp_biz\src\main\java\cn\itcast\erp\biz\impl\StoreBiz.java
 D:\erp\erp_parent\erp_biz\src\main\java\cn\itcast\erp\biz\IStoredetailBiz.java
+D:\erp\erp_parent\erp_biz\src\main\java\cn\itcast\erp\biz\impl\ReportBiz.java
 D:\erp\erp_parent\erp_biz\src\main\java\cn\itcast\erp\biz\IReturnorderdetailBiz.java
 D:\erp\erp_parent\erp_biz\src\main\java\cn\itcast\erp\biz\impl\BaseBiz.java
 D:\erp\erp_parent\erp_biz\src\main\java\cn\itcast\erp\biz\ISupplierBiz.java
@@ -24,6 +25,7 @@ D:\erp\erp_parent\erp_biz\src\main\java\cn\itcast\erp\biz\impl\MenuBiz.java
 D:\erp\erp_parent\erp_biz\src\main\java\cn\itcast\erp\biz\impl\RoleBiz.java
 D:\erp\erp_parent\erp_biz\src\main\java\cn\itcast\erp\biz\IGoodsBiz.java
 D:\erp\erp_parent\erp_biz\src\main\java\cn\itcast\erp\biz\exception\ErpException.java
+D:\erp\erp_parent\erp_biz\src\main\java\cn\itcast\erp\biz\IReportBiz.java
 D:\erp\erp_parent\erp_biz\src\main\java\cn\itcast\erp\biz\impl\GoodstypeBiz.java
 D:\erp\erp_parent\erp_biz\src\main\java\cn\itcast\erp\biz\impl\InventoryBiz.java
 D:\erp\erp_parent\erp_biz\src\main\java\cn\itcast\erp\biz\IOrderdetailBiz.java

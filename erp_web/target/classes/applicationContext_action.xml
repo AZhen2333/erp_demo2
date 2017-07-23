@@ -77,6 +77,10 @@
 	<bean id="supplierAction" class="cn.itcast.erp.action.SupplierAction" scope="prototype">
 		<property name="supplierBiz" ref="supplierBiz"></property>
 	</bean>
+	<!-- 销售统计 -->
+	<bean id="reportAction" class="cn.itcast.erp.action.ReportAction" scope="prototype">
+		<property name="reportBiz" ref="reportBiz"></property>
+	</bean>
 	
 	
 

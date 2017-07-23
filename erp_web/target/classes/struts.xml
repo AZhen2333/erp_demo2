@@ -36,6 +36,8 @@
 		<action name="storeoper_*" class="storeoperAction" method="{1}"></action>
     	<!-- 供应商 -->
 		<action name="supplier_*" class="supplierAction" method="{1}"></action>
+    	<!-- 销售统计 -->
+		<action name="report_*" class="reportAction" method="{1}"></action>
 
     </package>
 </struts>

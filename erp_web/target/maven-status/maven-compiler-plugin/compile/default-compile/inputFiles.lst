@@ -3,7 +3,9 @@ D:\erp\erp_parent\erp_web\src\main\java\cn\itcast\erp\action\StoreAction.java
 D:\erp\erp_parent\erp_web\src\main\java\cn\itcast\erp\action\InventoryAction.java
 D:\erp\erp_parent\erp_web\src\main\java\cn\itcast\erp\action\GoodstypeAction.java
 D:\erp\erp_parent\erp_web\src\main\java\cn\itcast\erp\action\RoleAction.java
+D:\erp\erp_parent\erp_web\src\main\java\webutils\WebUtils.java
 D:\erp\erp_parent\erp_web\src\main\java\cn\itcast\erp\action\OrderdetailAction.java
+D:\erp\erp_parent\erp_web\src\main\java\cn\itcast\erp\action\ReportAction.java
 D:\erp\erp_parent\erp_web\src\main\java\cn\itcast\erp\action\MenuAction.java
 D:\erp\erp_parent\erp_web\src\main\java\cn\itcast\erp\action\StoreoperAction.java
 D:\erp\erp_parent\erp_web\src\main\java\cn\itcast\erp\action\ReturnordersAction.java
