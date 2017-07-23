@@ -38,7 +38,7 @@ $('#pieChart').highcharts({
 			type: 'pie'
 		},
 		title: {
-			text: '销售统图'
+			text: '销售统计图'
 		},
 		tooltip: {
 			pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'

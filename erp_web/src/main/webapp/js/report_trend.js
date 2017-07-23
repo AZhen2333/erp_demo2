@@ -10,16 +10,17 @@ $(function(){
 			$.each(_data.rows,function(i,row){
 				row.name+='月';
 			});
+			showChart(_data.rows);
 		}
 		
 	});
 
 	/*查询*/
 	$('#btnSearch').bind('click',function(){
-
 		var formData = $('#searchForm').serializeJSON();
 		$('#grid').datagrid('load',formData);
 	});
+	
 		/*默认当前年份*/
 		var date=new Date();
 		$('#yearCob').combobox('setValue',date.getFullYear());
@@ -32,18 +33,18 @@ $(function(){
 });
 
 /*销售趋势图*/
-$(function (_data) {
+function showChart(_data) {
 	var yearMonth=[];
-	for(var i=1,i<=12,i++){
+	for(var i=1;i<=12;i++){
 		yearMonth.push[i+'月'];
 	}
     $('#highCharts').highcharts({
         title: {
-            text: '销售趋势图',
+            text: $('#yearCob').combobox('getValue')+'销售趋势图',
             x: -20 //center
         },
         subtitle: {
-            text: 'Source: itheima.com',
+            text: 'Source: www.itheima.com',
             x: -20
         },
         xAxis: {categories:yearMonth},
@@ -63,11 +64,19 @@ $(function (_data) {
         legend: {
             layout: 'vertical',
             align: 'right',
-            verticalAlign: 'middle',
+            verticalAlign: 'bottom',
             borderWidth: 0
         },
+        credits: {
+	    	href: "www.itheima.com",
+	    	text: "www.itheima.com"
+    	},
+    	tooltips:{
+    		valuePrefix:"月"
+    	},
         series: [{
             name: '年度销售趋势',
-            data:
+            data:_data
+        }]
     });
-});
+};
