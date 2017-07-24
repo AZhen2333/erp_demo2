@@ -8,6 +8,7 @@ import cn.itcast.erp.biz.IStoredetailBiz;
 import cn.itcast.erp.dao.IGoodsDao;
 import cn.itcast.erp.dao.IStoreDao;
 import cn.itcast.erp.dao.IStoredetailDao;
+import cn.itcast.erp.entity.Storealert;
 import cn.itcast.erp.entity.Storedetail;
 
 /**
@@ -68,6 +69,12 @@ public class StoredetailBiz extends BaseBiz<Storedetail> implements IStoredetail
 
 	public void setStoreDao(IStoreDao storeDao) {
 		this.storeDao = storeDao;
+	}
+
+	//库存已经列表
+	@Override
+	public List<Storealert> getStoreAlertList() {
+		return storedetailDao.getStoreAlertList();
 	}
 
 }

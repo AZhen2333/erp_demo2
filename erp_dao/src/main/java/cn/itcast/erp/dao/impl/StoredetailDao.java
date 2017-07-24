@@ -1,11 +1,14 @@
 package cn.itcast.erp.dao.impl;
 
+import java.util.List;
+
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Restrictions;
 import org.junit.runner.Request;
 
 import cn.itcast.erp.dao.IStoredetailDao;
+import cn.itcast.erp.entity.Storealert;
 import cn.itcast.erp.entity.Storedetail;
 
 /**
@@ -37,6 +40,14 @@ public class StoredetailDao extends BaseDao<Storedetail> implements IStoredetail
 			}
 		}
 		return dc;
+	}
+
+	//获取库存预警列表
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Storealert> getStoreAlertList() {
+		String hql="from Storealert where storenum<outnum";
+		return (List<Storealert>) getHibernateTemplate().find(hql);
 	}
 
 }
