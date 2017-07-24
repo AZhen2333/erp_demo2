@@ -17,6 +17,7 @@ D:\erp\erp_parent\erp_biz\src\main\java\cn\itcast\erp\biz\impl\StoreBiz.java
 D:\erp\erp_parent\erp_biz\src\main\java\cn\itcast\erp\biz\IStoredetailBiz.java
 D:\erp\erp_parent\erp_biz\src\main\java\cn\itcast\erp\biz\impl\ReportBiz.java
 D:\erp\erp_parent\erp_biz\src\main\java\cn\itcast\erp\biz\IReturnorderdetailBiz.java
+D:\erp\erp_parent\erp_biz\src\main\java\cn\itcast\erp\utils\MailUtil.java
 D:\erp\erp_parent\erp_biz\src\main\java\cn\itcast\erp\biz\impl\BaseBiz.java
 D:\erp\erp_parent\erp_biz\src\main\java\cn\itcast\erp\biz\ISupplierBiz.java
 D:\erp\erp_parent\erp_biz\src\main\java\cn\itcast\erp\biz\impl\StoredetailBiz.java

@@ -70,6 +70,10 @@
 		<property name="storedetailDao" ref="storedetailDao"></property>
 		<property name="storeDao" ref="storeDao"></property>
 		<property name="goodsDao" ref="goodsDao"></property>
+		<property name="mailUtil" ref="mailUtil"></property>
+		<property name="to" value="azhen2333@zoho.com.cn"></property>
+		<property name="subject" value="库存预警_时间:[time]"></property>
+		<property name="text" value="亲，有[count]中商品库存不足，请登录蓝云Erp3.1旗舰系统查询"></property>
 	</bean>
 	<!-- 仓库操作记录 -->
 	<bean id="storeoperBiz" class="cn.itcast.erp.biz.impl.StoreoperBiz">
@@ -86,7 +90,7 @@
 	<bean id="reportBiz" class="cn.itcast.erp.biz.impl.ReportBiz">
 		<property name="reportDao" ref="reportDao"></property>
 	</bean>
-
+	
 	
 </beans>
 	
