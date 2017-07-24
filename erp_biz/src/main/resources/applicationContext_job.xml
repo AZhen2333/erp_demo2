@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans 
+		http://www.springframework.org/schema/beans/spring-beans.xsd">  
+
+	<!-- 定义一个任务类  -->
+	<bean id="mailJob" class="cn.itcast.erp.job.MailJob">
+		<property name="mailUtil" ref="mailUtil"></property>
+		<property name="storedetailBiz" ref="storedetailBiz"></property>
+		<property name="to" value="azhen2333@zoho.com.cn"></property>
+		<property name="subject" value="库存预警时间:[time]"></property>
+		<property name="text" value="有[count]种商品库存不足，请登录erp查询"></property>
+	</bean>
+	<!-- 任务描述 -->
+	<bean id="jobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="mailJob"></property>
+		<property name="targetMethod" value="doJob"></property>
+		<!-- 关掉笔并发执行 -->
+		<!-- <property name="concurrent" value="false"></property> -->
+	</bean>
+	<!-- 触发器 -->
+	<bean id="jobTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="jobDetail"></property>
+		<!-- 七子表达式 -->
+		<property name="cronExpression" value="0/5 * * * * ?"></property>
+	</bean>
+	<!-- 任务调度管理容器 -->
+	<bean id="schedluer" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<property name="triggers">
+			<list>
+				<ref bean="jobTrigger"/>
+			</list>
+		</property>
+	</bean>
+</beans>
+	

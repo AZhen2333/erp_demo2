@@ -6,6 +6,7 @@ D:\erp\erp_parent\erp_biz\src\main\java\cn\itcast\erp\biz\IRoleBiz.java
 D:\erp\erp_parent\erp_biz\src\main\java\cn\itcast\erp\biz\IGoodstypeBiz.java
 D:\erp\erp_parent\erp_biz\src\main\java\cn\itcast\erp\biz\IBaseBiz.java
 D:\erp\erp_parent\erp_biz\src\main\java\cn\itcast\erp\biz\IDepBiz.java
+D:\erp\erp_parent\erp_biz\src\main\java\cn\itcast\erp\job\MailJob.java
 D:\erp\erp_parent\erp_biz\src\main\java\cn\itcast\erp\biz\impl\StoreoperBiz.java
 D:\erp\erp_parent\erp_biz\src\main\java\cn\itcast\erp\biz\IStoreoperBiz.java
 D:\erp\erp_parent\erp_biz\src\main\java\cn\itcast\erp\biz\IStoreBiz.java
