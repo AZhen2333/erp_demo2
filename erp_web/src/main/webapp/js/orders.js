@@ -29,21 +29,7 @@ $(function(){
 	//加载表格数据
 	$('#grid').datagrid({
 		url:url,
-		columns:[[
-			{field:'uuid',title:'编号',width:100},
-			{field:'createtime',title:'生成日期',width:100,formatter:formatDate},
-			{field:'checktime',title:'审核日期',width:100,formatter:formatDate},
-			{field:'starttime',title:'确认日期',width:100,formatter:formatDate},
-			{field:'endtime',title:'入库或出库日期',width:100,formatter:formatDate},
-			{field:'createrName',title:'下单员',width:100},
-			{field:'checkerName',title:'审核员',width:100},
-			{field:'starterName',title:'采购员',width:100},
-			{field:'enderName',title:'库管员',width:100},
-			{field:'supplierName',title:'供应商或客户',width:100},
-			{field:'totalmoney',title:'合计金额',width:100},
-			{field:'state',title:'采购状态',width:100,formatter:formatState},
-			{field:'waybillsn',title:'运单号',width:100},       
-		]],
+		columns:colunms(),
 		singleSelect: true,
 		pagination: true,
 		//双击事件
@@ -128,6 +114,14 @@ $(function(){
 				handler:doStart
 		});
 	}	
+	
+	
+	//导出按钮
+	orderDlgToolbar.push({
+		text:'导出',
+		iconCls:'icon-excel',
+		handler:doExport
+	});
 	
 	//双击入库事件
 	if(oper == 'doInStore' || oper == 'doOutStore'){
@@ -340,4 +334,50 @@ function doInOutStore(){
 			});
 		}
 	});
+}
+	
+///*
+// * 根据不同类型导出不同表数据
+// * */
+function colunms(){
+	if(type==1){
+		return [[
+					{field:'uuid',title:'编号',width:100},
+					{field:'createtime',title:'生成日期',width:100,formatter:formatDate},
+					{field:'checktime',title:'审核日期',width:100,formatter:formatDate},
+					{field:'starttime',title:'确认日期',width:100,formatter:formatDate},
+					{field:'endtime',title:'入库日期',width:100,formatter:formatDate},
+					{field:'createrName',title:'下单员',width:100},
+					{field:'checkerName',title:'审核员',width:100},
+					{field:'starterName',title:'采购员',width:100},
+					{field:'enderName',title:'库管员',width:100},
+					{field:'supplierName',title:'供应商',width:100},
+					{field:'totalmoney',title:'合计金额',width:100},
+					{field:'state',title:'状态',width:100,formatter:formatState},
+					{field:'waybillsn',title:'运单号',width:100},       
+				]]
+	}
+	
+	if(type==2){
+		return [[
+			{field:'uuid',title:'编号',width:100},
+			{field:'endtime',title:'入库日期',width:100,formatter:formatDate},
+			{field:'createrName',title:'下单员',width:100},
+			{field:'enderName',title:'库管员',width:100},
+			{field:'supplierName',title:'客户',width:100},
+			{field:'totalmoney',title:'合计金额',width:100},
+			{field:'state',title:'状态',width:100,formatter:formatState},
+			{field:'waybillsn',title:'运单号',width:100},       
+		]]
+	}
+	
+}	
+	
+
+	
+/*
+ * 导出
+ * */	
+function doExport(){
+	$.download("orders_expotrById", {id:$('#uuid').html()});
 }

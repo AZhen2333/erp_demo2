@@ -1,9 +1,24 @@
 package cn.itcast.erp.biz.impl;
 
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFCellStyle;
+import org.apache.poi.hssf.usermodel.HSSFDataFormat;
+import org.apache.poi.hssf.usermodel.HSSFFont;
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.BorderStyle;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.HorizontalAlignment;
+import org.apache.poi.ss.usermodel.VerticalAlignment;
+import org.apache.poi.ss.util.CellRangeAddress;
 
 import cn.itcast.erp.biz.IOrdersBiz;
 import cn.itcast.erp.biz.exception.ErpException;
@@ -136,6 +151,7 @@ public class OrdersBiz extends BaseBiz<Orders> implements IOrdersBiz {
 	/*
 	 * 采购订单确认
 	 */
+	@SuppressWarnings("static-access")
 	@Override
 	public void doStart(Long uuid, Long empuuid) {
 		// 订单信息
@@ -150,4 +166,156 @@ public class OrdersBiz extends BaseBiz<Orders> implements IOrdersBiz {
 		orders.setState(orders.STATE_START);
 
 	}
+
+	/*
+	 * 根据订单编号导出订单
+	 */
+	@SuppressWarnings("resource")
+	@Override
+	public void exportById(OutputStream os, Long uuid) throws IOException {
+		Orders orders = ordersDao.get(uuid);
+		// 创建工作簿
+		HSSFWorkbook workbook = new HSSFWorkbook();
+		// 判断工作表的名称，采购单/销售单
+		String title = "";
+		if (Orders.TYPE_OUT.equals(orders.getType())) {
+			title = "销 售 单";
+		}
+		if (Orders.TYPE_IN.equals(orders.getType())) {
+			title = "采 购 单";
+		}
+		// 创建工作表，定义工作表名称
+		HSSFSheet sheet = workbook.createSheet(title);
+		// 创建行
+		HSSFRow row = null;
+		// 单元格样式
+		HSSFCellStyle style_content = workbook.createCellStyle();
+		style_content.setAlignment(HorizontalAlignment.RIGHT);// 水平居中
+		style_content.setVerticalAlignment(VerticalAlignment.BOTTOM);// 垂直居中
+
+		HSSFCellStyle style_title = workbook.createCellStyle();
+		style_title.cloneStyleFrom(style_content);
+
+		// 边框
+		style_content.setBorderBottom(BorderStyle.MEDIUM);
+		style_content.setBorderLeft(BorderStyle.MEDIUM);
+		style_content.setBorderRight(BorderStyle.MEDIUM);
+		style_content.setBorderTop(BorderStyle.MEDIUM);
+
+		// 内容字体
+		HSSFFont font_content = workbook.createFont();
+		font_content.setFontName("宋体");
+		font_content.setFontHeightInPoints((short) 12);
+		style_content.setFont(font_content);
+
+		// 标题字体 黑体
+		HSSFFont font_title = workbook.createFont();
+		font_title.setFontName("黑体");
+		font_title.setFontHeightInPoints((short) 18);
+		style_title.setFont(font_title);
+
+		// 创建单元格
+		HSSFCell cell = null;
+		// 标题行
+		sheet.createRow(0).createCell(0).setCellStyle(style_title);
+
+		// 明细数量
+		int size = orders.getOrderdetails().size();
+		// 表格行数
+		int rowCnt = 9 + size;
+		// 设置行高
+		sheet.getRow(0).setHeight((short) 1000);// 第一行行高
+		for (int i = 2; i <= rowCnt; i++) {// 第三行开始
+			row = sheet.createRow(i);
+			row.setHeight((short) 500);// 内容区域每行的行高
+			for (int col = 0; col < 4; col++) {
+				cell = row.createCell(col);
+				// 单元格样式
+				cell.setCellStyle(style_content);
+			}
+		}
+
+		// 列宽
+		for (int i = 0; i <= 3; i++) {
+			sheet.setColumnWidth(i, 5000);
+		}
+
+		// 日期格式
+		HSSFDataFormat dFormat = workbook.createDataFormat();
+		HSSFCellStyle style_date = workbook.createCellStyle();
+		style_date.cloneStyleFrom(style_content);
+		style_date.setDataFormat(dFormat.getFormat("yyyy-MM-dd"));
+		// 设置日期格式
+		for (int i = 3; i <= 6; i++) {
+			sheet.getRow(i).getCell(1).setCellStyle(style_date);
+		}
+		// 合并单元格
+		sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 3));// 标题
+		sheet.addMergedRegion(new CellRangeAddress(2, 2, 1, 3));// 供应商
+		sheet.addMergedRegion(new CellRangeAddress(7, 7, 1, 3));// 订单明细
+		sheet.addMergedRegion(new CellRangeAddress(rowCnt, rowCnt, 0, 2));// 合计
+
+		// 设置内容
+		// 标题
+		sheet.getRow(0).getCell(0).setCellValue(title);
+		// 3行
+		sheet.getRow(2).getCell(0).setCellValue("供应商");
+		sheet.getRow(2).getCell(1).setCellValue(ordersDao.getName(orders.getSupplieruuid()));
+		// 4行
+		sheet.getRow(3).getCell(0).setCellValue("下单日期");
+		setDate(sheet.getRow(3).getCell(1), orders.getCreatetime());
+		sheet.getRow(3).getCell(2).setCellValue("经办人");
+		sheet.getRow(3).getCell(3).setCellValue(empDao.getName(orders.getCreater()));
+		// 5行
+		sheet.getRow(4).getCell(0).setCellValue("审核日期");
+		setDate(sheet.getRow(4).getCell(1), orders.getChecktime());
+		sheet.getRow(4).getCell(2).setCellValue("经办人");
+		sheet.getRow(4).getCell(3).setCellValue(empDao.getName(orders.getChecker()));
+		// 6行
+		sheet.getRow(5).getCell(0).setCellValue("采购日期");
+		setDate(sheet.getRow(5).getCell(1), orders.getStarttime());
+		sheet.getRow(5).getCell(2).setCellValue("经办人");
+		sheet.getRow(5).getCell(3).setCellValue(empDao.getName(orders.getStarter()));
+		// 7行
+		sheet.getRow(6).getCell(0).setCellValue("入库日期");
+		setDate(sheet.getRow(6).getCell(1), orders.getEndtime());
+		sheet.getRow(6).getCell(2).setCellValue("经办人");
+		sheet.getRow(6).getCell(3).setCellValue(empDao.getName(orders.getEnder()));
+		// 8行
+		sheet.getRow(7).getCell(0).setCellValue("订单明细");
+		// 9行
+		sheet.getRow(8).getCell(0).setCellValue("商品名称");
+		sheet.getRow(8).getCell(1).setCellValue("数量");
+		sheet.getRow(8).getCell(2).setCellValue("价格");
+		sheet.getRow(8).getCell(3).setCellValue("金额");
+
+		// 明细内容
+		int i = 9;
+		for (Orderdetail od : orders.getOrderdetails()) {
+			row = sheet.getRow(i);
+			row.getCell(0).setCellValue(od.getGoodsname());
+			row.getCell(1).setCellValue(od.getNum());
+			row.getCell(2).setCellValue(od.getPrice());
+			row.getCell(3).setCellValue(od.getMoney());
+			i++;
+		}
+
+		// 最后一行，合计
+		sheet.getRow(rowCnt).getCell(0).setCellValue("合计");
+		sheet.getRow(rowCnt).getCell(3).setCellValue(orders.getTotalmoney());
+
+		// 输出
+		workbook.write(os);
+
+	}
+
+	/*
+	 * 设置日期
+	 */
+	private void setDate(Cell cell, Date date) {
+		if (null != date) {
+			cell.setCellValue(date);
+		}
+	}
+
 }

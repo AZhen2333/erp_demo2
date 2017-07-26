@@ -1,6 +1,11 @@
 package cn.itcast.erp.action;
 
+import java.io.IOException;
 import java.util.List;
+
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.struts2.ServletActionContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -8,6 +13,8 @@ import com.alibaba.fastjson.JSON;
 
 import cn.itcast.erp.biz.IOrdersBiz;
 import cn.itcast.erp.biz.exception.ErpException;
+import cn.itcast.erp.biz.impl.OrdersBiz;
+import cn.itcast.erp.dao.impl.OrdersDao;
 import cn.itcast.erp.entity.Emp;
 import cn.itcast.erp.entity.Orderdetail;
 import cn.itcast.erp.entity.Orders;
@@ -116,5 +123,19 @@ public class OrdersAction extends BaseAction<Orders> {
 	public void setJson(String json) {
 		this.json = json;
 	}
-
+	
+	/*
+	 * 导出订单数据
+	 * */
+	public void expotrById(){
+		String filename = String.format("attachment;filename=orders_%d.xls", getId());
+		HttpServletResponse response = ServletActionContext.getResponse();
+		//设置为下载
+		response.setHeader("Content-Disposition", filename);
+		try {
+			ordersBiz.exportById(response.getOutputStream(), getId());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 }

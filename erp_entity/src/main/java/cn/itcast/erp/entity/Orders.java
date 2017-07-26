@@ -23,6 +23,8 @@ public class Orders {
 	
 	/*采购订单*/
 	public static final String TYPE_IN="1";
+	/*销售订单*/
+	public static final String TYPE_OUT="2";
 	
 	private Long uuid;//编号
 	private java.util.Date createtime;//生成日期
