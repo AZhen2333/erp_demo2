@@ -21,6 +21,13 @@ $(function(){
 				//关闭编辑窗口
 				$('#editDlg').dialog('open');
 			}
+		},'-',{
+			text: '导出',
+			iconCls: 'icon-excel',
+			handler: function(){
+				var submtData=$('#searchForm').serializeJSON()
+				$.download("supplier_exprot?t1.type="+Request['type'],submtData);
+			}
 		}]
 	});
 

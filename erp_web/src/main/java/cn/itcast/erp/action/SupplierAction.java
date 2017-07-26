@@ -55,8 +55,8 @@ public class SupplierAction extends BaseAction<Supplier> {
 		if ("2".equals(getT1().getType())) {
 			fileName = "客户";
 		}
-		//添加格式后缀
-		fileName+=".xls";
+		// 添加格式后缀
+		fileName += ".xls";
 		// 对传输的中文进行转码，ISO-8859-1
 		try {
 			fileName = new String(fileName.getBytes(), "ISO-8859-1");
@@ -65,7 +65,7 @@ public class SupplierAction extends BaseAction<Supplier> {
 			// 获取输出流
 			ServletOutputStream os = response.getOutputStream();
 			// 告诉客户端，传输是一个文件
-			response.setHeader("Context-Disposition", "attachment;filename=" + fileName);
+			response.setHeader("Content-Disposition", "attachment;filename=" + fileName);
 			// 业务层处理
 			supplierBiz.export(os, getT1());
 		} catch (Exception e) {
