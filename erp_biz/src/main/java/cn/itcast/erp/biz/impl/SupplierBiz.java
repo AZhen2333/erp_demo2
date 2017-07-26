@@ -1,6 +1,7 @@
 package cn.itcast.erp.biz.impl;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.List;
 
@@ -9,6 +10,7 @@ import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 
 import cn.itcast.erp.biz.ISupplierBiz;
+import cn.itcast.erp.biz.exception.ErpException;
 import cn.itcast.erp.dao.ISupplierDao;
 import cn.itcast.erp.entity.Supplier;
 
@@ -66,6 +68,56 @@ public class SupplierBiz extends BaseBiz<Supplier> implements ISupplierBiz {
 		}
 		hssfWorkbook.write(os);
 		hssfWorkbook.close();
+	}
+
+	/*
+	 * 导入文件
+	 */
+	@SuppressWarnings("resource")
+	@Override
+	public void doImport(InputStream is) throws Exception {
+		// 工作簿
+		HSSFWorkbook workBook = null;
+		// 写入时创建工作簿
+		workBook = new HSSFWorkbook(is);
+		// 获取第一个工作表
+		HSSFSheet sheet = workBook.getSheetAt(0);
+		// 判断表名
+		String type = "";
+		if ("供应商".equals(sheet.getSheetName())) {
+			type = Supplier.TYPE_SUPPLIER;
+		}
+		if ("客户".equals(sheet.getSheetName())) {
+			type = Supplier.TYPE_CUSTOMER;
+		} else {
+			throw new ErpException("工作表名称不正确");
+		}
+		// 读取数据
+		int lastRow = sheet.getLastRowNum();// 获取最后一行
+		Supplier supplier = null;
+		for (int i = 1; i <= lastRow; i++) {
+			supplier = new Supplier();
+			// 获取第二行开始每一行第一列的名字
+			supplier.setName(sheet.getRow(i).getCell(0).getStringCellValue());
+			List<Supplier> list = supplierDao.getList(null, supplier, null);
+			// 有这个数据
+			if (list.size() > 0) {
+				supplier = list.get(0);
+			}
+			// 封装数据
+			supplier.setAddress(sheet.getRow(i).getCell(1).getStringCellValue());
+			supplier.setContact(sheet.getRow(i).getCell(2).getStringCellValue());
+			supplier.setTele(sheet.getRow(i).getCell(3).getStringCellValue());
+			supplier.setEmail(sheet.getRow(i).getCell(4).getStringCellValue());
+			// 新增的数据
+			if (list.size() == 0) {
+				supplier.setType(type);
+				supplierDao.add(supplier);
+			}
+		}
+		if (null != workBook) {
+			workBook.close();
+		}
 	}
 
 }

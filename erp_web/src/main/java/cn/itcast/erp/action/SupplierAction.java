@@ -1,5 +1,9 @@
 package cn.itcast.erp.action;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 
@@ -8,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import cn.itcast.erp.biz.ISupplierBiz;
+import cn.itcast.erp.biz.exception.ErpException;
 import cn.itcast.erp.entity.Supplier;
 
 /**
@@ -23,6 +28,13 @@ public class SupplierAction extends BaseAction<Supplier> {
 	private ISupplierBiz supplierBiz;
 
 	private String p;
+
+	/*
+	 * 导入文件
+	 */
+	private File file;
+	private String fileFileName;
+	private String fileContextType;
 
 	// 自动补全
 	public void list() {
@@ -72,5 +84,40 @@ public class SupplierAction extends BaseAction<Supplier> {
 			log.error("导出数据失败", e);
 		}
 
+	}
+
+	/*
+	 * 导入文件
+	 */
+	public void doImport() {
+		if (!"application/vnd.ms-excel".equals(fileContextType)) {
+			if (!fileFileName.endsWith(".xls")) {
+				ajaxReturn(false, "文件不是excel文件");
+				return;
+			}
+		}
+		try {
+			supplierBiz.doImport(new FileInputStream(file));
+			ajaxReturn(true, "导入成功");
+		} catch (ErpException e) {
+			ajaxReturn(false, e.getMessage());
+		} catch (Exception e) {
+			ajaxReturn(false, "导入失败");
+			e.printStackTrace();
+		}
+	}
+
+	public void setFile(File file) {
+		this.file = file;
+	}
+
+	
+
+	public void setFileContextType(String fileContextType) {
+		this.fileContextType = fileContextType;
+	}
+
+	public void setFileFileName(String fileFileName) {
+		this.fileFileName = fileFileName;
 	}
 }

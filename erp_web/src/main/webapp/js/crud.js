@@ -28,7 +28,13 @@ $(function(){
 				var submtData=$('#searchForm').serializeJSON()
 				$.download("supplier_exprot?t1.type="+Request['type'],submtData);
 			}
-		}]
+		},'-',{
+			text: '导入',
+			iconCls: 'icon-save',
+			handler: function(){
+				$('#importDlg').dialog('open');
+			}
+			}]
 	});
 
 	//点击查询按钮
@@ -44,6 +50,7 @@ $(function(){
 		_height=height;
 	}
 	
+	//初始化编辑窗口
 	$('#editDlg').dialog({
 		title: '编辑',//窗口标题
 		width: 300,//窗口宽度
@@ -80,6 +87,37 @@ $(function(){
 			handler:function(){
 				//关闭弹出的窗口
 				$('#editDlg').dialog('close');
+			}
+		}]
+	});
+
+	$('#importDlg').dialog({
+		title: '导入',//窗口标题
+		width: 330,//窗口宽度
+		height: 106,//窗口高度
+		closed: true,//窗口是是否为关闭状态, true：表示关闭
+		modal: true,//模式窗口
+		buttons:[{
+			text:'导入',
+			iconCls: 'icon-save',
+			handler:function(){
+//				var formData=$('#importForm').serializeJSON();
+				$.ajax({
+					url: 'supplier_doImport',
+					data: new FormData($('#importForm')[0]),
+					dataType: 'json',
+					type: 'post',
+					processData:false,//如果要发送 DOM 树信息或其它不希望转换的信息，请设置为 false
+	    			contentType:false,//(默认: "application/x-www-form-urlencoded") 发送信息至服务器时内容编码类型。我们上传的是字节流，不能编码
+					success:function(rtn){
+						$.messager.alert('提示',rtn.message, 'info',function(){
+							if(rtn.success){
+								$('#editDlg').dialog('close');
+								$('#grid').datagrid('reload');
+							}
+						});
+					}
+				});
 			}
 		}]
 	});

@@ -142,4 +142,5 @@ public class BaseDao<T> extends HibernateDaoSupport implements IBaseDao<T> {
 		return null;
 
 	}
+
 }

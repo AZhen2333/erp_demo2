@@ -63,4 +63,5 @@ public interface IBaseDao<T> {
 	 * 通过编号获取名称
 	 */
 	String getName(Long uuid);
+	
 }
