@@ -34,7 +34,7 @@ public class SupplierAction extends BaseAction<Supplier> {
 	 */
 	private File file;
 	private String fileFileName;
-	private String fileContextType;
+	private String fileContentType;
 
 	// 自动补全
 	public void list() {
@@ -90,11 +90,11 @@ public class SupplierAction extends BaseAction<Supplier> {
 	 * 导入文件
 	 */
 	public void doImport() {
-		if (!"application/vnd.ms-excel".equals(fileContextType)) {
-			if (!fileFileName.endsWith(".xls")) {
-				ajaxReturn(false, "文件不是excel文件");
-				return;
-			}
+		if (!"application/vnd.ms-excel".equals(fileContentType)) {
+			// if (!fileFileName.endsWith(".xls")) {
+			ajaxReturn(false, "文件不是excel文件");
+			return;
+			// }
 		}
 		try {
 			supplierBiz.doImport(new FileInputStream(file));
@@ -111,13 +111,11 @@ public class SupplierAction extends BaseAction<Supplier> {
 		this.file = file;
 	}
 
-	
-
-	public void setFileContextType(String fileContextType) {
-		this.fileContextType = fileContextType;
-	}
-
 	public void setFileFileName(String fileFileName) {
 		this.fileFileName = fileFileName;
+	}
+
+	public void setFileContentType(String fileContentType) {
+		this.fileContentType = fileContentType;
 	}
 }

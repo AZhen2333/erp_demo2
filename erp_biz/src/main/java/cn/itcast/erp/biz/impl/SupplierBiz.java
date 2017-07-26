@@ -42,10 +42,10 @@ public class SupplierBiz extends BaseBiz<Supplier> implements ISupplierBiz {
 		HSSFSheet sheet = null;
 		// 根据类型查创建响应名称的工作表
 		if ("1".equals(t1.getType())) {
-			sheet = hssfWorkbook.createSheet("客户");
+			sheet = hssfWorkbook.createSheet("供应商");
 		}
 		if ("2".equals(t1.getType())) {
-			sheet = hssfWorkbook.createSheet("供应商");
+			sheet = hssfWorkbook.createSheet("客户");
 		}
 		// 写入表头
 		HSSFRow row = sheet.createRow(0);
@@ -73,33 +73,30 @@ public class SupplierBiz extends BaseBiz<Supplier> implements ISupplierBiz {
 	/*
 	 * 导入文件
 	 */
-	@SuppressWarnings("resource")
 	@Override
 	public void doImport(InputStream is) throws Exception {
-		// 工作簿
-		HSSFWorkbook workBook = null;
-		// 写入时创建工作簿
-		workBook = new HSSFWorkbook(is);
-		// 获取第一个工作表
+		HSSFWorkbook workBook = new HSSFWorkbook(is);
+		//获取第一个工作表
 		HSSFSheet sheet = workBook.getSheetAt(0);
-		// 判断表名
-		String type = "";
-		if ("供应商".equals(sheet.getSheetName())) {
-			type = Supplier.TYPE_SUPPLIER;
+		//工作表名称
+		String sheetName = sheet.getSheetName();
+		String type = "0";
+		//根据工作表名称来判断是供应商还是客户
+		if("供应商".equals(sheetName)){
+			type = "1";
 		}
-		if ("客户".equals(sheet.getSheetName())) {
-			type = Supplier.TYPE_CUSTOMER;
-		} else {
-			throw new ErpException("工作表名称不正确");
+		if("客户".equals(sheetName)){
+			type = "2";
 		}
 		// 读取数据
 		int lastRow = sheet.getLastRowNum();// 获取最后一行
 		Supplier supplier = null;
+		List<Supplier> list =null;
 		for (int i = 1; i <= lastRow; i++) {
 			supplier = new Supplier();
 			// 获取第二行开始每一行第一列的名字
 			supplier.setName(sheet.getRow(i).getCell(0).getStringCellValue());
-			List<Supplier> list = supplierDao.getList(null, supplier, null);
+			list = supplierDao.getList(null, supplier, null);
 			// 有这个数据
 			if (list.size() > 0) {
 				supplier = list.get(0);
@@ -115,9 +112,7 @@ public class SupplierBiz extends BaseBiz<Supplier> implements ISupplierBiz {
 				supplierDao.add(supplier);
 			}
 		}
-		if (null != workBook) {
 			workBook.close();
-		}
 	}
 
 }
