@@ -24,13 +24,13 @@
 	<bean id="jobTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
 		<property name="jobDetail" ref="jobDetail"></property>
 		<!-- 七子表达式 -->
-		<property name="cronExpression" value="0/5 * * * * ?"></property>
+		<property name="cronExpression" value="0/5 * * * * ? 2018"></property>
 	</bean>
 	<!-- 任务调度管理容器 -->
 	<bean id="schedluer" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
 		<property name="triggers">
 			<list>
-				<ref bean="jobTrigger"/>
+				<!-- <ref bean="jobTrigger"/> -->
 			</list>
 		</property>
 	</bean>
