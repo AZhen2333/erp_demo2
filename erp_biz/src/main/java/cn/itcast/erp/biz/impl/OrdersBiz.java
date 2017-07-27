@@ -20,6 +20,8 @@ import org.apache.poi.ss.usermodel.HorizontalAlignment;
 import org.apache.poi.ss.usermodel.VerticalAlignment;
 import org.apache.poi.ss.util.CellRangeAddress;
 
+import com.redsun.bos.ws.impl.IWaybillWs;
+
 import cn.itcast.erp.biz.IOrdersBiz;
 import cn.itcast.erp.biz.exception.ErpException;
 import cn.itcast.erp.dao.IEmpDao;
@@ -42,6 +44,9 @@ public class OrdersBiz extends BaseBiz<Orders> implements IOrdersBiz {
 	private IOrdersDao ordersDao;
 	private IEmpDao empDao;
 	private ISupplierDao supplierDao;
+	
+	
+	
 
 	@SuppressWarnings("static-access")
 	@Override // 添加采购订单
@@ -317,5 +322,7 @@ public class OrdersBiz extends BaseBiz<Orders> implements IOrdersBiz {
 			cell.setCellValue(date);
 		}
 	}
+
+
 
 }

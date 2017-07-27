@@ -8,12 +8,16 @@ import java.util.Map;
 
 import javax.xml.crypto.Data;
 
+import com.redsun.bos.ws.impl.IWaybillWs;
+
 import cn.itcast.erp.biz.IReportBiz;
 import cn.itcast.erp.dao.IReportDao;
+import cn.itcast.erp.dao.ISupplierDao;
 
 public class ReportBiz implements IReportBiz {
 
 	private IReportDao reportDao;
+	
 
 	@SuppressWarnings("rawtypes")
 	@Override

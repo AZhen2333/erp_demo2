@@ -1,7 +1,5 @@
 package cn.itcast.erp.action;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
@@ -11,11 +9,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.alibaba.fastjson.JSON;
+import com.redsun.bos.ws.Waybilldetail;
+import com.redsun.bos.ws.impl.IWaybillWs;
 
 import cn.itcast.erp.biz.IOrdersBiz;
 import cn.itcast.erp.biz.exception.ErpException;
-import cn.itcast.erp.biz.impl.OrdersBiz;
-import cn.itcast.erp.dao.impl.OrdersDao;
 import cn.itcast.erp.entity.Emp;
 import cn.itcast.erp.entity.Orderdetail;
 import cn.itcast.erp.entity.Orders;
@@ -29,7 +27,9 @@ import cn.itcast.erp.entity.Orders;
 public class OrdersAction extends BaseAction<Orders> {
 
 	private IOrdersBiz ordersBiz;
-
+	private IWaybillWs waybillWs;//运单
+	
+	private Long waybillsn;//运单号
 	
 	private static final Logger log = LoggerFactory.getLogger(OrdersAction.class);
 
@@ -140,5 +140,27 @@ public class OrdersAction extends BaseAction<Orders> {
 			e.printStackTrace();
 		}
 	}
+	
+	/*
+	 * 查询运单详情
+	 * */
+	public void waybilldetailList(){
+		List<Waybilldetail> waybilldetailsList = waybillWs.waybilldetailsList(waybillsn);
+		write(JSON.toJSONString(waybilldetailsList));
+	}
+	
+	
+	public void setWaybillWs(IWaybillWs waybillWs) {
+		this.waybillWs = waybillWs;
+	}
+
+	public IWaybillWs getWaybillWs() {
+		return waybillWs;
+	}
+
+	public void setWaybillsn(Long waybillsn) {
+		this.waybillsn = waybillsn;
+	}
+
 	
 }
