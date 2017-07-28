@@ -148,7 +148,9 @@ public class OrderdetailBiz extends BaseBiz<Orderdetail> implements IOrderdetail
 			//获取客户信息
 			Supplier supplier = supplierDao.get(orders.getSupplieruuid());
 			//调用红日系统在线预约下单
-			waybillWs.addWaybill(1l, supplier.getAddress(), supplier.getName(), supplier.getTele(), "--");
+			Long addWaybill = waybillWs.addWaybill(1l, supplier.getAddress(), supplier.getName(), supplier.getTele(), "零食");
+			//设置订单编号
+			orders.setWaybillsn(addWaybill);
 		}
 
 	}
