@@ -7,12 +7,12 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * <p>Java class for waybilldetailsList complex type.
+ * <p>Java class for waybilldetailList complex type.
  * 
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="waybilldetailsList">
+ * &lt;complexType name="waybilldetailList">
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
@@ -26,10 +26,10 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "waybilldetailsList", propOrder = {
+@XmlType(name = "waybilldetailList", propOrder = {
     "arg0"
 })
-public class WaybilldetailsList {
+public class WaybilldetailList {
 
     protected Long arg0;
 

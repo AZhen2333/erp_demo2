@@ -10,12 +10,12 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * <p>Java class for waybilldetailsListResponse complex type.
+ * <p>Java class for waybilldetailListResponse complex type.
  * 
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="waybilldetailsListResponse">
+ * &lt;complexType name="waybilldetailListResponse">
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
@@ -29,10 +29,10 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "waybilldetailsListResponse", propOrder = {
+@XmlType(name = "waybilldetailListResponse", propOrder = {
     "_return"
 })
-public class WaybilldetailsListResponse {
+public class WaybilldetailListResponse {
 
     @XmlElement(name = "return")
     protected List<Waybilldetail> _return;

@@ -128,18 +128,20 @@ $(function(){
 	//物流详情
 	orderDlgToolbar.push({
 		text:'物流详情',
+		iconCls:'icon-search',
 		handler:function(){
-			var waybillsn=$('#waybillsn').html();
-			if(waybill==''){
+			var waybillsn = $('#waybillsn').html();
+			if(waybillsn == ''){
 				$.messager.alert("提示","没有物流信息",'info');
-				return ;
+				return;
 			}
+			//打开物流详情窗口
 			$('#waybillDlg').dialog('open');
+			
 			$('#waybillgrid').datagrid({
-				url:'orders_waybilldetailList?waybillsn'+$('#waybillsn').html()
-			});
+				url:'orders_waybilldetailList?waybillsn=' + $('#waybillsn').html()
+			})
 		}
-		
 	});
 	
 	
@@ -208,12 +210,12 @@ $(function(){
 		closed:true
 	});
 
-	//舒适化物流详情的grid
+	//初始化物流详情的grid
 	$('#waybillgrid').datagrid({
 		columns:[[
 			{field:'exedate',title:'执行日期',width:100},
 			{field:'exetime',title:'执行时间',width:100},
-			{field:'info',title:'执行信息',width:100},
+			{field:'info',title:'执行信息',width:230}
 		]],
 		singleSelect:true,
 		rownumbers:true

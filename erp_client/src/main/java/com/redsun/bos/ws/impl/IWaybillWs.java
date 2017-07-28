@@ -60,9 +60,9 @@ public interface IWaybillWs {
      */
     @WebMethod
     @WebResult(targetNamespace = "")
-    @RequestWrapper(localName = "waybilldetailsList", targetNamespace = "http://ws.bos.redsun.com/", className = "com.redsun.bos.ws.WaybilldetailsList")
-    @ResponseWrapper(localName = "waybilldetailsListResponse", targetNamespace = "http://ws.bos.redsun.com/", className = "com.redsun.bos.ws.WaybilldetailsListResponse")
-    public List<Waybilldetail> waybilldetailsList(
+    @RequestWrapper(localName = "waybilldetailList", targetNamespace = "http://ws.bos.redsun.com/", className = "com.redsun.bos.ws.WaybilldetailList")
+    @ResponseWrapper(localName = "waybilldetailListResponse", targetNamespace = "http://ws.bos.redsun.com/", className = "com.redsun.bos.ws.WaybilldetailListResponse")
+    public List<Waybilldetail> waybilldetailList(
         @WebParam(name = "arg0", targetNamespace = "")
         Long arg0);
 

@@ -122,9 +122,7 @@ public class OrdersAction extends BaseAction<Orders> {
 	}
 	
 	
-	public void setJson(String json) {
-		this.json = json;
-	}
+	
 	
 	/*
 	 * 导出订单数据
@@ -145,21 +143,23 @@ public class OrdersAction extends BaseAction<Orders> {
 	 * 查询运单详情
 	 * */
 	public void waybilldetailList(){
-		List<Waybilldetail> waybilldetailsList = waybillWs.waybilldetailsList(waybillsn);
-		write(JSON.toJSONString(waybilldetailsList));
+		List<Waybilldetail> waybilldetailList = waybillWs.waybilldetailList(waybillsn);
+		write(JSON.toJSONString(waybilldetailList));
 	}
 	
-	
+	public void setJson(String json) {
+		this.json = json;
+	}
 	public void setWaybillWs(IWaybillWs waybillWs) {
 		this.waybillWs = waybillWs;
 	}
 
-	public IWaybillWs getWaybillWs() {
-		return waybillWs;
-	}
-
 	public void setWaybillsn(Long waybillsn) {
 		this.waybillsn = waybillsn;
+	}
+
+	public Long getWaybillsn() {
+		return waybillsn;
 	}
 
 	

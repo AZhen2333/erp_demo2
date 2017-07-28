@@ -25,9 +25,9 @@ import javax.xml.namespace.QName;
 public class ObjectFactory {
 
     private final static QName _AddWaybill_QNAME = new QName("http://ws.bos.redsun.com/", "addWaybill");
-    private final static QName _WaybilldetailsList_QNAME = new QName("http://ws.bos.redsun.com/", "waybilldetailsList");
+    private final static QName _WaybilldetailListResponse_QNAME = new QName("http://ws.bos.redsun.com/", "waybilldetailListResponse");
+    private final static QName _WaybilldetailList_QNAME = new QName("http://ws.bos.redsun.com/", "waybilldetailList");
     private final static QName _AddWaybillResponse_QNAME = new QName("http://ws.bos.redsun.com/", "addWaybillResponse");
-    private final static QName _WaybilldetailsListResponse_QNAME = new QName("http://ws.bos.redsun.com/", "waybilldetailsListResponse");
 
     /**
      * Create a new ObjectFactory that can be used to create new instances of schema derived classes for package: com.redsun.bos.ws
@@ -37,11 +37,11 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link WaybilldetailsList }
+     * Create an instance of {@link WaybilldetailListResponse }
      * 
      */
-    public WaybilldetailsList createWaybilldetailsList() {
-        return new WaybilldetailsList();
+    public WaybilldetailListResponse createWaybilldetailListResponse() {
+        return new WaybilldetailListResponse();
     }
 
     /**
@@ -53,11 +53,11 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link WaybilldetailsListResponse }
+     * Create an instance of {@link WaybilldetailList }
      * 
      */
-    public WaybilldetailsListResponse createWaybilldetailsListResponse() {
-        return new WaybilldetailsListResponse();
+    public WaybilldetailList createWaybilldetailList() {
+        return new WaybilldetailList();
     }
 
     /**
@@ -86,12 +86,21 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link WaybilldetailsList }{@code >}}
+     * Create an instance of {@link JAXBElement }{@code <}{@link WaybilldetailListResponse }{@code >}}
      * 
      */
-    @XmlElementDecl(namespace = "http://ws.bos.redsun.com/", name = "waybilldetailsList")
-    public JAXBElement<WaybilldetailsList> createWaybilldetailsList(WaybilldetailsList value) {
-        return new JAXBElement<WaybilldetailsList>(_WaybilldetailsList_QNAME, WaybilldetailsList.class, null, value);
+    @XmlElementDecl(namespace = "http://ws.bos.redsun.com/", name = "waybilldetailListResponse")
+    public JAXBElement<WaybilldetailListResponse> createWaybilldetailListResponse(WaybilldetailListResponse value) {
+        return new JAXBElement<WaybilldetailListResponse>(_WaybilldetailListResponse_QNAME, WaybilldetailListResponse.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link WaybilldetailList }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://ws.bos.redsun.com/", name = "waybilldetailList")
+    public JAXBElement<WaybilldetailList> createWaybilldetailList(WaybilldetailList value) {
+        return new JAXBElement<WaybilldetailList>(_WaybilldetailList_QNAME, WaybilldetailList.class, null, value);
     }
 
     /**
@@ -101,15 +110,6 @@ public class ObjectFactory {
     @XmlElementDecl(namespace = "http://ws.bos.redsun.com/", name = "addWaybillResponse")
     public JAXBElement<AddWaybillResponse> createAddWaybillResponse(AddWaybillResponse value) {
         return new JAXBElement<AddWaybillResponse>(_AddWaybillResponse_QNAME, AddWaybillResponse.class, null, value);
-    }
-
-    /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link WaybilldetailsListResponse }{@code >}}
-     * 
-     */
-    @XmlElementDecl(namespace = "http://ws.bos.redsun.com/", name = "waybilldetailsListResponse")
-    public JAXBElement<WaybilldetailsListResponse> createWaybilldetailsListResponse(WaybilldetailsListResponse value) {
-        return new JAXBElement<WaybilldetailsListResponse>(_WaybilldetailsListResponse_QNAME, WaybilldetailsListResponse.class, null, value);
     }
 
 }

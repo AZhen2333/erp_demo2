@@ -142,15 +142,15 @@ public class OrderdetailBiz extends BaseBiz<Orderdetail> implements IOrderdetail
 		queryOrder.setState(Orderdetail.STATE_NOT_OUT);
 		long count = storedetailDao.getCount(storedetail, null, null);
 		if (count == 0) {
-			orders.setEndtime(new Date());
+			orders.setEndtime(orderdetail.getEndtime());
 			orders.setEnder(empuuid);
 			orders.setState(Orders.STATE_END);
 			//获取客户信息
 			Supplier supplier = supplierDao.get(orders.getSupplieruuid());
 			//调用红日系统在线预约下单
-			Long addWaybill = waybillWs.addWaybill(1l, supplier.getAddress(), supplier.getName(), supplier.getTele(), "零食");
+			Long waybill = waybillWs.addWaybill(1l, supplier.getAddress(), supplier.getName(), supplier.getTele(), "零食");
 			//设置订单编号
-			orders.setWaybillsn(addWaybill);
+			orders.setWaybillsn(waybill);
 		}
 
 	}
