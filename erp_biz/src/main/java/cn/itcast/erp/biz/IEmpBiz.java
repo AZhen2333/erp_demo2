@@ -30,4 +30,7 @@ public interface IEmpBiz extends IBaseBiz<Emp> {
 
 	//根据用户id获取用户角色
 	List<Tree> readEmpRole(Long uuid);
+
+	//更新用户角色
+	void updateEmpRole(Long uuid, String checkedIds);
 }

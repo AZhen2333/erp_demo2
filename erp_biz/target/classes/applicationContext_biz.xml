@@ -20,6 +20,7 @@
 	<!-- 员工 -->
 	<bean id="empBiz" class="cn.itcast.erp.biz.impl.EmpBiz">
 		<property name="empDao" ref="empDao"></property>
+		<property name="roleDao" ref="roleDao"></property>
 	</bean>
 	<!-- 商品 -->
 	<bean id="goodsBiz" class="cn.itcast.erp.biz.impl.GoodsBiz">

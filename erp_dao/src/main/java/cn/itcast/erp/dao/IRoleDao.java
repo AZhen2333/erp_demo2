@@ -1,5 +1,6 @@
 package cn.itcast.erp.dao;
 
+
 import cn.itcast.erp.entity.Role;
 /**
  * 角色数据访问接口
@@ -7,5 +8,6 @@ import cn.itcast.erp.entity.Role;
  *
  */
 public interface IRoleDao extends IBaseDao<Role>{
+
 
 }

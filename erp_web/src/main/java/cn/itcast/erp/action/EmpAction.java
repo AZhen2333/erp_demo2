@@ -9,6 +9,7 @@ import com.alibaba.fastjson.JSON;
 
 import cn.itcast.erp.biz.IEmpBiz;
 import cn.itcast.erp.biz.exception.ErpException;
+import cn.itcast.erp.dao.impl.EmpDao;
 import cn.itcast.erp.entity.Emp;
 import cn.itcast.erp.entity.Tree;
 
@@ -23,6 +24,7 @@ public class EmpAction extends BaseAction<Emp> {
 	private IEmpBiz empBiz;
 	private String oldPwd;
 	private String newPwd;
+	private String checkedIds;
 
 	/*
 	 * 修改密码
@@ -65,6 +67,17 @@ public class EmpAction extends BaseAction<Emp> {
 		write(JSON.toJSONString(empRole));
 	}
 	
+	public void updateEmpRole(){
+		try {
+			empBiz.updateEmpRole(getId(), checkedIds);
+			ajaxReturn(true, "更新用户角色成功");
+		} catch (Exception e) {
+			ajaxReturn(false, "更新用户角色失败");
+			e.printStackTrace();
+		}
+	}
+	
+	
 	
 	public void setEmpBiz(IEmpBiz empBiz) {
 		this.empBiz = empBiz;
@@ -77,5 +90,9 @@ public class EmpAction extends BaseAction<Emp> {
 
 	public void setNewPwd(String newPwd) {
 		this.newPwd = newPwd;
+	}
+
+	public void setCheckedIds(String checkedIds) {
+		this.checkedIds = checkedIds;
 	}
 }

@@ -99,6 +99,23 @@ public class EmpBiz extends BaseBiz<Emp> implements IEmpBiz {
 		}
 		return treeList;
 	}
+	
+	/*
+	 * 更新用户角色
+	 * */
+	@Override
+	public void updateEmpRole(Long uuid,String checkedIds){
+		//获取用户，进入持久化
+		Emp emp = empDao.get(uuid);
+		//清除用户角色
+		emp.setRoles(new ArrayList<Role>());
+		//拆分checkedIds
+		String[] ids = checkedIds.split(",");
+		for (String id : ids) {
+			//在持久化中添加角色
+			emp.getRoles().add(roleDao.get(Long.valueOf(id)));
+		}
+	}
 
 	/*
 	 * MD5加密方法
