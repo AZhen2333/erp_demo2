@@ -1,4 +1,5 @@
 package cn.itcast.erp.action;
+
 import com.alibaba.fastjson.JSON;
 
 import cn.itcast.erp.biz.IMenuBiz;
@@ -18,10 +19,11 @@ public class MenuAction extends BaseAction<Menu> {
 		super.setBaseBiz(this.menuBiz);
 	}
 	
+	
 	public void getMenuTree(){
-		Menu menu = menuBiz.get("0");
-		String jsonString = JSON.toJSONString(menu);
-		write(jsonString);
+		Menu menu = menuBiz.getMenuByEmpuuid(getLoginUser().getUuid());
+		write(JSON.toJSONString(menu));
 	}
 
+	
 }

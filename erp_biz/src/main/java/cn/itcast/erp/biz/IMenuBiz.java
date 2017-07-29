@@ -7,5 +7,7 @@ import cn.itcast.erp.entity.Menu;
  */
 public interface IMenuBiz extends IBaseBiz<Menu>{
 
+	Menu getMenuByEmpuuid(Long empuuid);
+
 }
 
