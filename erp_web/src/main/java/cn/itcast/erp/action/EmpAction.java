@@ -1,10 +1,16 @@
 package cn.itcast.erp.action;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.alibaba.fastjson.JSON;
+
 import cn.itcast.erp.biz.IEmpBiz;
 import cn.itcast.erp.biz.exception.ErpException;
 import cn.itcast.erp.entity.Emp;
+import cn.itcast.erp.entity.Tree;
 
 /**
  * 员工Action
@@ -18,7 +24,9 @@ public class EmpAction extends BaseAction<Emp> {
 	private String oldPwd;
 	private String newPwd;
 
-	// 修改密码
+	/*
+	 * 修改密码
+	 * */
 	public void updatePwd() {
 		Emp emp = getLoginUser();
 		try {
@@ -33,7 +41,9 @@ public class EmpAction extends BaseAction<Emp> {
 		}
 	}
 
-	// 重置密码
+	/*
+	 * 重置密码
+	 * */
 	public void updatePwd_reset() {
 		try {
 			empBiz.updatePwd_reset(newPwd, getId());
@@ -47,6 +57,15 @@ public class EmpAction extends BaseAction<Emp> {
 		}
 	}
 
+	/*
+	 * 根据用户id获取用户角色
+	 * */
+	public void readEmpRole(){
+		List<Tree> empRole = empBiz.readEmpRole(getId());
+		write(JSON.toJSONString(empRole));
+	}
+	
+	
 	public void setEmpBiz(IEmpBiz empBiz) {
 		this.empBiz = empBiz;
 		super.setBaseBiz(this.empBiz);

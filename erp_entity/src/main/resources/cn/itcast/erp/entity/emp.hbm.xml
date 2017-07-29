@@ -19,6 +19,10 @@
        <!--  <property name="depuuid" />  -->
        <!--多对一  -->
        <many-to-one name="dep" class="cn.itcast.erp.entity.Dep" column="depuuid"></many-to-one>
- 
+ 		<!-- 多对多 -->
+ 		<bag name="roles" order-by="roleuuid" table="EMP_ROLE">
+			<key column="empuuid"></key> 		
+			<many-to-many class="cn.itcast.erp.entity.Role" column="roleuuid"></many-to-many>
+ 		</bag>
     </class>
 </hibernate-mapping>

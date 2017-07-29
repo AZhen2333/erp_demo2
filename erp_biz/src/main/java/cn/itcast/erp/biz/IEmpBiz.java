@@ -1,6 +1,9 @@
 package cn.itcast.erp.biz;
 
+import java.util.List;
+
 import cn.itcast.erp.entity.Emp;
+import cn.itcast.erp.entity.Tree;
 
 /**
  * 员工业务逻辑层接口
@@ -24,4 +27,7 @@ public interface IEmpBiz extends IBaseBiz<Emp> {
 
 	// 重置密码
 	void updatePwd_reset(String pwd, Long uuid);
+
+	//根据用户id获取用户角色
+	List<Tree> readEmpRole(Long uuid);
 }
