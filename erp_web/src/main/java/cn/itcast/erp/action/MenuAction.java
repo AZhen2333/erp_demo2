@@ -21,7 +21,7 @@ public class MenuAction extends BaseAction<Menu> {
 	
 	
 	public void getMenuTree(){
-		Menu menu = menuBiz.getMenuByEmpuuid(getLoginUser().getUuid());
+		Menu menu = menuBiz.readMenuByEmpuuid(getLoginUser().getUuid());
 		write(JSON.toJSONString(menu));
 	}
 

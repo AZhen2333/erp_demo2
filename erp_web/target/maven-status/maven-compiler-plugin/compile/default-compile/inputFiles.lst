@@ -1,6 +1,7 @@
 D:\erp\erp_parent\erp_web\src\main\java\cn\itcast\erp\action\StoreAction.java
 D:\erp\erp_parent\erp_web\src\main\java\cn\redsun\bos\action\ReturnorderdetailAction.java
 D:\erp\erp_parent\erp_web\src\main\java\cn\itcast\erp\action\InventoryAction.java
+D:\erp\erp_parent\erp_web\src\main\java\cn\itcast\erp\filter\ErpAuthorizationFilter.java
 D:\erp\erp_parent\erp_web\src\main\java\cn\itcast\erp\action\RoleAction.java
 D:\erp\erp_parent\erp_web\src\main\java\webutils\WebUtils.java
 D:\erp\erp_parent\erp_web\src\main\java\cn\itcast\erp\action\OrderdetailAction.java
@@ -23,6 +24,7 @@ D:\erp\erp_parent\erp_web\src\main\java\cn\redsun\bos\action\InventoryAction.jav
 D:\erp\erp_parent\erp_web\src\main\java\cn\redsun\bos\action\OrdersAction.java
 D:\erp\erp_parent\erp_web\src\main\java\cn\itcast\erp\action\StoreoperAction.java
 D:\erp\erp_parent\erp_web\src\main\java\cn\itcast\erp\action\ReturnordersAction.java
+D:\erp\erp_parent\erp_web\src\main\java\cn\itcast\erp\realm\ErpRealm.java
 D:\erp\erp_parent\erp_web\src\main\java\cn\itcast\erp\action\SupplierAction.java
 D:\erp\erp_parent\erp_web\src\main\java\cn\redsun\bos\action\StoredetailAction.java
 D:\erp\erp_parent\erp_web\src\main\java\cn\redsun\bos\action\EmpAction.java

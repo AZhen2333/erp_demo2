@@ -23,7 +23,7 @@
 	</bean>
 	<!-- 登录-->
 	<bean id="loginAction" class="cn.itcast.erp.action.LoginAction" scope="prototype">
-		<property name="empBiz" ref="empBiz"></property>
+		<!-- <property name="empBiz" ref="empBiz"></property> -->
 	</bean>
 	<!-- 商品 -->
 	<bean id="goodsAction" class="cn.itcast.erp.action.GoodsAction" scope="prototype">

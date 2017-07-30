@@ -26,7 +26,7 @@ public class MenuBiz extends BaseBiz<Menu> implements IMenuBiz {
 	 * 根据empuuid查询菜单
 	 */
 	@Override
-	public Menu getMenuByEmpuuid(Long empuuid) {
+	public Menu readMenuByEmpuuid(Long empuuid) {
 		// 获取员工下菜单
 		List<Menu> empMenu = menuDao.getMenuByEmpuuid(empuuid);
 		// 所有菜单
@@ -69,5 +69,13 @@ public class MenuBiz extends BaseBiz<Menu> implements IMenuBiz {
 		menu.setUrl(m.getUrl());
 		menu.setMenus(new ArrayList<Menu>());
 		return menu;
+	}
+
+	/*
+	 * 获取用户菜单
+	 * */
+	@Override
+	public List<Menu> getMenuByEmpuuid(Long empuuid) {
+		return menuDao.getMenuByEmpuuid(empuuid);
 	}
 }

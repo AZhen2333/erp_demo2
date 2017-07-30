@@ -7,6 +7,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.shiro.SecurityUtils;
 import org.apache.struts2.ServletActionContext;
 
 import com.alibaba.fastjson.JSON;
@@ -256,6 +257,6 @@ public class BaseAction<T> {
 	 * @return
 	 */
 	public Emp getLoginUser(){
-		return  (Emp) ActionContext.getContext().getSession().get("logerUser");
+		return  (Emp) SecurityUtils.getSubject().getPrincipal();
 	}
 }

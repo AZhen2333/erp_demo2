@@ -6,6 +6,10 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.AuthenticationException;
+import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.subject.Subject;
 import org.apache.struts2.ServletActionContext;
 
 import com.alibaba.fastjson.JSON;
@@ -16,13 +20,11 @@ import cn.itcast.erp.entity.Emp;
 
 public class LoginAction {
 
-	// bean
-	private IEmpBiz empBiz;
 	// 属性驱动
 	private String username;
 	private String pwd;
 
-	public void loginUser() {
+	/*public void loginUser() {
 		try {
 			Emp logerUser = empBiz.findByUsernameAndPwd(username, pwd);
 			if (null == logerUser) {
@@ -36,19 +38,34 @@ public class LoginAction {
 			e.printStackTrace();
 			ajaxReturn(false, "登录失败");
 		}
+	}*/
+	public void loginUser() {
+		//创建令牌
+		UsernamePasswordToken token = new UsernamePasswordToken(username,pwd);
+		//获得主题：subject
+		Subject subject = SecurityUtils.getSubject();
+		//执行认证，登录
+		try {
+			subject.login(token);
+			ajaxReturn(true, "");
+		} catch (AuthenticationException e) {
+			e.printStackTrace();
+			ajaxReturn(false, "用户名或密码错误");
+		}
+		
 	}
 
 	public void showUserName() {
-		Emp loginUser = (Emp) ActionContext.getContext().getSession().get("logerUser");
-		if (null != loginUser) {
-			ajaxReturn(true, loginUser.getUsername());
+		Emp emp = (Emp) SecurityUtils.getSubject().getPrincipal();
+		if (null != emp) {
+			ajaxReturn(true, emp.getUsername());
 		} else {
 			ajaxReturn(false, "");
 		}
 	}
 
 	public void loginOut() {
-		ActionContext.getContext().getSession().remove("logerUser");
+		SecurityUtils.getSubject().logout();
 
 	}
 
@@ -84,13 +101,6 @@ public class LoginAction {
 		}
 	}
 
-	public IEmpBiz getEmpBiz() {
-		return empBiz;
-	}
-
-	public void setEmpBiz(IEmpBiz empBiz) {
-		this.empBiz = empBiz;
-	}
 
 	public void setUsername(String username) {
 		this.username = username;

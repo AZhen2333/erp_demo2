@@ -1,4 +1,6 @@
 package cn.itcast.erp.biz;
+import java.util.List;
+
 import cn.itcast.erp.entity.Menu;
 /**
  * 菜单业务逻辑层接口
@@ -7,7 +9,8 @@ import cn.itcast.erp.entity.Menu;
  */
 public interface IMenuBiz extends IBaseBiz<Menu>{
 
-	Menu getMenuByEmpuuid(Long empuuid);
+	List<Menu> getMenuByEmpuuid(Long empuuid);
+	Menu readMenuByEmpuuid(Long empuuid);
 
 }
 

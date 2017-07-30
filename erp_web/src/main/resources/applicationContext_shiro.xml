@@ -1,0 +1,141 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+						http://www.springframework.org/schema/beans/spring-beans.xsd">
+						
+	<!-- id="shiroFilter",和web.xml中的filter的名称一致 -->
+	<bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+		<!-- 安全管理器 ：shiro的核心，外观者模式-->
+		<property name="securityManager" ref="securityManager"></property>
+		<!-- 认证相关配置：当用户没有登录就访问必须登陆的资源时，跳转到此页 -->
+		<property name="loginUrl" value="/login.html"></property>
+		<!-- 授权相关配置：当用户访问没有权限的资源时，跳转此页 -->
+		<property name="unauthorizedUrl" value="/error.html"></property>
+		<property name="filters">
+			<map>
+				<entry key="perms" value-ref="erpFilter"></entry>
+			</map>
+		</property>
+		<!-- 过滤链的定义：用来配置页面的访问规则 -->
+		<property name="filterChainDefinitions">
+			<value>
+				/error.html = anon
+				/login_*=anon
+									
+				/emp_updatePwd= perms[]
+				/pwd.html=perms["重置密码"]	
+				/emp_updatePwd_reset=perms["重置密码"]
+										
+				/orders.html= perms["采购申请"]	
+				/orders_add= perms["采购申请"]						
+				/supplier_list= perms["采购申请"]
+								
+				/orders.html= perms["采购订单查询"]
+				/orders_listByPage= perms["采购订单查询"]
+				
+				/orders.html= perms["采购审核"]
+				/orders_listByPage=perms["采购审核"]
+				/orders_doCheck=perms["采购审核"]
+				
+				/orders.html= perms["采购确认"]
+				/orders_listByPage=perms["采购确认"]
+				/orders_doStart=perms["采购确认"]
+				
+				/orders.html= perms["采购入库"]
+				/orders_listByPage=perms["采购入库"]
+				/store_mylist= perms["采购入库"]
+				/orderdetail_doInStore=perms["采购入库"]
+				
+				/orders.html= perms["销售订单录入"]
+				/orders_add= perms["销售订单录入"]						
+				/supplier_list= perms["销售订单录入"]
+				/store_mylist= perms["销售订单录入"]
+				
+				/orders.html= perms["销售订单查询"]
+				/orders_listByPage= perms["销售订单查询"]
+				
+				/orders.html= perms["销售订单出库"]
+				/orders_listByPage=perms["销售订单出库"]
+				/store_mylist= perms["销售订单出库"]
+				/orderdetail_doOutStore=perms["销售订单出库"]
+				
+				/storedetail.html= perms["库存查询"]
+				/goods_list= perms["库存查询"]
+				/goods_get= perms["库存查询"]
+				/store_list= perms["库存查询"]
+				/store_get= perms["库存查询"]
+				/storedetail_listByPage= perms["库存查询"]
+				/storeoper_listByPage= perms["库存查询"]
+
+				/storeoper.html= perms["库存变动记录"]
+				/storeoper_listByPage= perms["库存变动记录"]
+				/goods_list= perms["库存变动记录"]
+				/goods_get= perms["库存变动记录"]
+				/store_list= perms["库存变动记录"]
+				/store_get= perms["库存变动记录"]
+				/emp_list= perms["库存变动记录"]
+				/emp_get= perms["库存变动记录"]
+					
+				/report_orders.html= perms["销售统计表"]
+				/report_order*= perms["销售统计表"]
+
+				/report_trend.html= perms["销售趋势分析"]
+				/report_trend*= perms["销售趋势分析"]
+								
+				/roleMenuSet.html=perms["角色权限设置"]
+				/role_list=perms["角色权限设置"]
+				/role_readRoleMenus=perms["角色权限设置"]
+				/role_updateRoleMenus=perms["角色权限设置"]
+								
+				/empRoleSet.html=perms["用户角色设置"]
+				/emp_list=perms["用户角色设置"]
+				/emp_readEmpRoles=perms["用户角色设置"]
+				/emp_updateEmpRoles=perms["用户角色设置"]
+
+				/role.html= perms["角色设置"]
+				/role_*= perms["角色设置"]			
+
+				/goods.html= perms["商品"]						
+				/goods_*= perms["商品"]
+				/goodstype_list= perms["商品"]
+
+				/goodstype.html= perms["商品类型"]						
+				/goodstype_*= perms["商品类型"]	
+
+				/supplier.html = perms["供应商"]						
+				/supplier_* = perms["供应商"]
+				
+				/supplier.html = perms["客户"]						
+				/supplier_* = perms["客户"]
+
+				/store.html= perms["仓库"]
+				/store_*= perms["仓库"]
+
+				/emp.html= perms["员工"]								
+				/emp_*= perms["员工"]
+				/dep_list=perms["员工"]
+				
+				/dep.html= perms["部门"]		
+				/dep_*= perms["部门"]		
+
+				/*.html = authc					
+				/* = authc					
+				/* = authc		
+			</value>
+		</property>
+	</bean>
+	<!-- 安全管理器 shiro的核心组件(大脑) -->
+	<bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+		<property name="realm" ref="erpRealm"></property>
+	</bean>
+	
+	<!-- 注入biz -->
+	<bean id="erpRealm" class="cn.itcast.erp.realm.ErpRealm">
+		<property name="empBiz" ref="empBiz"></property>
+		<property name="menuBiz" ref="menuBiz"></property>
+	</bean>
+	<!-- 自定义权限拦截器 -->
+	<bean id="erpFilter" class="cn.itcast.erp.filter.ErpAuthorizationFilter"></bean>
+</beans>
+	
