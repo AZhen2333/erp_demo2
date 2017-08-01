@@ -19,6 +19,9 @@ import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.HorizontalAlignment;
 import org.apache.poi.ss.usermodel.VerticalAlignment;
 import org.apache.poi.ss.util.CellRangeAddress;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.apache.shiro.subject.Subject;
 
 import com.redsun.bos.ws.impl.IWaybillWs;
 
@@ -51,6 +54,16 @@ public class OrdersBiz extends BaseBiz<Orders> implements IOrdersBiz {
 	@SuppressWarnings("static-access")
 	@Override // 添加采购订单
 	public void add(Orders orders) {
+		//获取主题
+		Subject subject = SecurityUtils.getSubject();
+		if(Orders.TYPE_IN.equals(orders.getType())){
+			if(!subject.isPermitted("采购申请")){
+				throw new ErpException("当前用户没有采购申请权限");
+			}
+		}else{
+			throw new ErpException("非法参数");
+		}
+		
 		// 生成日期
 		orders.setCreatetime(new Date());
 		// 订单状态
@@ -139,6 +152,7 @@ public class OrdersBiz extends BaseBiz<Orders> implements IOrdersBiz {
 	 */
 	@SuppressWarnings("static-access")
 	@Override
+	@RequiresPermissions("采购审核")
 	public void doCheck(Long uuid, Long empuuid) {
 		// 订单信息
 		Orders orders = ordersDao.get(uuid);
@@ -158,6 +172,7 @@ public class OrdersBiz extends BaseBiz<Orders> implements IOrdersBiz {
 	 */
 	@SuppressWarnings("static-access")
 	@Override
+	@RequiresPermissions("采购确认")
 	public void doStart(Long uuid, Long empuuid) {
 		// 订单信息
 		Orders orders = ordersDao.get(uuid);

@@ -3,6 +3,8 @@ package cn.itcast.erp.biz.impl;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+
 import com.redsun.bos.ws.impl.IWaybillWs;
 
 import cn.itcast.erp.biz.IOrderdetailBiz;
@@ -16,6 +18,7 @@ import cn.itcast.erp.entity.Orders;
 import cn.itcast.erp.entity.Storedetail;
 import cn.itcast.erp.entity.Storeoper;
 import cn.itcast.erp.entity.Supplier;
+import redis.clients.jedis.Jedis;
 
 /**
  * 订单明细业务逻辑类
@@ -35,6 +38,7 @@ public class OrderdetailBiz extends BaseBiz<Orderdetail> implements IOrderdetail
 	 */
 	@SuppressWarnings("static-access")
 	@Override
+	@RequiresPermissions("采购入库")
 	public void doInStore(Long uuid, Long empuuid, Long storeuuid) {
 		/* * 更新订单明细 */
 		Orderdetail orderdetail = orderdetailDao.get(uuid);
@@ -75,7 +79,6 @@ public class OrderdetailBiz extends BaseBiz<Orderdetail> implements IOrderdetail
 		storeoperLog.setStoreuuid(storeuuid);
 		storeoperLog.setType(Storeoper.TYPE_IN);
 		storeoperDao.add(storeoperLog);
-
 		/* * 更新订单 */
 		Orders orders = orderdetail.getOrders();
 		// 构造查询条件
@@ -94,6 +97,7 @@ public class OrderdetailBiz extends BaseBiz<Orderdetail> implements IOrderdetail
 	/*
 	 * 出库
 	 */
+	@RequiresPermissions("销售订单出库")
 	public void doOutStore(Long uuid, Long empuuid, Long storeuuid) {
 		/* 更新库存详单 */
 		// 查询出库单

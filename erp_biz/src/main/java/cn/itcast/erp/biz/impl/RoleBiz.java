@@ -6,9 +6,11 @@ import java.util.List;
 import cn.itcast.erp.biz.IRoleBiz;
 import cn.itcast.erp.dao.IMenuDao;
 import cn.itcast.erp.dao.IRoleDao;
+import cn.itcast.erp.entity.Emp;
 import cn.itcast.erp.entity.Menu;
 import cn.itcast.erp.entity.Role;
 import cn.itcast.erp.entity.Tree;
+import redis.clients.jedis.Jedis;
 
 /**
  * 角色业务逻辑类
@@ -20,6 +22,7 @@ public class RoleBiz extends BaseBiz<Role> implements IRoleBiz {
 
 	private IRoleDao roleDao;
 	private IMenuDao menuDao;
+	private Jedis jedis;
 
 	/*
 	 * 通过角色id获取树形结构
@@ -54,6 +57,9 @@ public class RoleBiz extends BaseBiz<Role> implements IRoleBiz {
 		return treeList;
 	}
 	
+	/*
+	 * 更新角色权限
+	 * */
 	@Override
 	public void updateRoleMenu(long uuid,String checkedIds){
 		//获取指定角色，进入持久化
@@ -65,6 +71,9 @@ public class RoleBiz extends BaseBiz<Role> implements IRoleBiz {
 		for (String id : ids) {
 			//根据id查询menu，添加到menus中
 			role.getMenus().add(menuDao.get(id));
+		}
+		for(Emp emp:role.getEmpList()){
+			jedis.del("menus_"+emp.getUuid());
 		}
 	}
 
@@ -83,6 +92,10 @@ public class RoleBiz extends BaseBiz<Role> implements IRoleBiz {
 
 	public void setMenuDao(IMenuDao menuDao) {
 		this.menuDao = menuDao;
+	}
+
+	public void setJedis(Jedis jedis) {
+		this.jedis = jedis;
 	}
 
 }

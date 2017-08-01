@@ -3,9 +3,12 @@ package cn.itcast.erp.biz.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.alibaba.fastjson.JSON;
+
 import cn.itcast.erp.biz.IMenuBiz;
 import cn.itcast.erp.dao.IMenuDao;
 import cn.itcast.erp.entity.Menu;
+import redis.clients.jedis.Jedis;
 
 /**
  * 菜单业务逻辑类
@@ -16,6 +19,7 @@ import cn.itcast.erp.entity.Menu;
 public class MenuBiz extends BaseBiz<Menu> implements IMenuBiz {
 
 	private IMenuDao menuDao;
+	private Jedis jedis;//注入jedis
 
 	public void setMenuDao(IMenuDao menuDao) {
 		this.menuDao = menuDao;
@@ -28,7 +32,7 @@ public class MenuBiz extends BaseBiz<Menu> implements IMenuBiz {
 	@Override
 	public Menu readMenuByEmpuuid(Long empuuid) {
 		// 获取员工下菜单
-		List<Menu> empMenu = menuDao.getMenuByEmpuuid(empuuid);
+		List<Menu> empMenu = getMenuByEmpuuid(empuuid);
 		// 所有菜单
 		Menu menus = menuDao.get("0");
 		// 克隆所有菜单，子菜单为空,用于接收结果
@@ -57,6 +61,26 @@ public class MenuBiz extends BaseBiz<Menu> implements IMenuBiz {
 		}
 		return cloneMenu;
 	}
+	
+	/*
+	 * 获取用户菜单
+	 * */
+	@Override
+	public List<Menu> getMenuByEmpuuid(Long empuuid) {
+		//从jedis缓存中获取菜单
+		String menusJedis= jedis.get("menus_"+empuuid);
+		List<Menu> menus=null;
+		//如果空，数据库获取菜单，转json格式后放入jedis
+		if(null==menusJedis){
+			menus=menuDao.getMenuByEmpuuid(empuuid);
+			jedis.set("menus_"+empuuid,JSON.toJSONString(menus));
+		}else{
+			//非空，反转成集合
+			menus = JSON.parseArray(menusJedis,Menu.class);
+		}
+		return menus;
+	}
+	
 
 	/*
 	 * 克隆
@@ -71,11 +95,9 @@ public class MenuBiz extends BaseBiz<Menu> implements IMenuBiz {
 		return menu;
 	}
 
-	/*
-	 * 获取用户菜单
-	 * */
-	@Override
-	public List<Menu> getMenuByEmpuuid(Long empuuid) {
-		return menuDao.getMenuByEmpuuid(empuuid);
+	
+
+	public void setJedis(Jedis jedis) {
+		this.jedis = jedis;
 	}
 }

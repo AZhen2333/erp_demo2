@@ -13,6 +13,8 @@ public class Role {
 	private String name;//名称
 	@JSONField(serialize=false)
 	private List<Menu> menus;//权限菜单
+	@JSONField(serialize=false)
+	private List<Emp> empList;
 
 	public Long getUuid() {		
 		return uuid;
@@ -31,6 +33,12 @@ public class Role {
 	}
 	public void setMenus(List<Menu> menus) {
 		this.menus = menus;
+	}
+	public List<Emp> getEmpList() {
+		return empList;
+	}
+	public void setEmpList(List<Emp> empList) {
+		this.empList = empList;
 	}
 
 }

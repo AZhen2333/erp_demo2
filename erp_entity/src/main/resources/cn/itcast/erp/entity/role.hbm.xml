@@ -13,5 +13,10 @@
  			<key column="roleuuid"></key>
  			<many-to-many class="cn.itcast.erp.entity.Menu" column="menuuuid"></many-to-many>
  		</bag>
+ 		<!-- 多对多 -->
+ 		<bag name="empList" roder-by="empuuid" table="EMP_ROLE">
+ 			<key column="roleuuid"></key>
+ 			<many-to-many class="cn.itcast.erp.entity.Emp" cloumn="empuuid"></many-to-many>
+ 		</bag>
     </class>
 </hibernate-mapping>

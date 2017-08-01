@@ -120,7 +120,6 @@
 				/dep_*= perms["部门"]		
 
 				/*.html = authc					
-				/* = authc					
 				/* = authc		
 			</value>
 		</property>
@@ -130,6 +129,7 @@
 		<property name="realm" ref="erpRealm"></property>
 	</bean>
 	
+	
 	<!-- 注入biz -->
 	<bean id="erpRealm" class="cn.itcast.erp.realm.ErpRealm">
 		<property name="empBiz" ref="empBiz"></property>
@@ -137,5 +137,20 @@
 	</bean>
 	<!-- 自定义权限拦截器 -->
 	<bean id="erpFilter" class="cn.itcast.erp.filter.ErpAuthorizationFilter"></bean>
+	
+	<!-- 启动shiro注解 -->
+	<bean
+		class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator"
+			depends-on="lifecycleBeanPostProcessor" >
+		<!-- 默认使用JDK代理 ，如被代理类没有实现接口，必须使用下列配置开启 cglib代理  -->
+		<property name="proxyTargetClass" value="true" />
+	</bean>	
+	<bean
+		class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
+		<property name="securityManager" ref="securityManager" />
+	</bean>
+	<!-- 对安全管理器 增强代码 ， spring 后处理器 -->
+	<bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/> 
+	
 </beans>
 	
